@@ -696,7 +696,8 @@ function compareData(newData, lastData){
   <b>&gt; 해결 방안</b><br>
   <img src="https://raw.githubusercontent.com/calmnature/pencraft/main/GIF/thread.gif" alt="쓰레드 이미지"><br>
   쓰레드의 작업은 순차적으로 진행되는 것이 아니라 컴퓨터가 내부적으로 돌리기 때문에 생각했던 순서대로 진행이 되지 않았음<br>
-  따라서 1개의 쓰레드로 1공정 실행 -> 1공정 종료 -> 2공정 실행 -> 2공정 종료의 형식이 아니라 1공정 ~ 4공정까지 하나의 작업으로 묶어서 아래의 코드처럼 processTask를 실행하면 그 안에서 1~4공정 로직과 저장까지 하는 것을 1개의 Task로 묶음<br>  
+  따라서 1개의 쓰레드로 1공정 실행 -> 1공정 종료 -> 2공정 실행 -> 2공정 종료의 형식이 아니라 1공정 ~ 4공정까지 하나의 작업으로 묶어서 아래의 코드처럼 processTask를 실행하면 그 안에서 1~4공정 로직과 저장까지 하는 것을 1개의 Task로 묶음
+  
   ```java
     private Runnable processTask(int count) {
         return () -> {
@@ -712,6 +713,7 @@ function compareData(newData, lastData){
         };
     }
   ```
+
 </details>
 
 <details>
