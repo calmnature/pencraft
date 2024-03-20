@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/header :: header}">
+    <!--    <meta http-equiv="refresh" content="3; url=/products">-->
+</head>
+<head>
+    <script src="/js/monitoring.js"></script>
+    <style>
+
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)), url("/img/로봇팔2.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragment/navbar::navbar}" class="navbar-fixed mb-3"></div>
+<div class="container ">
+    <div class="row">
+        <div id="formDiv" class="m-auto col-6">
+            <h3 class="fw-bold text-center text-warning mb-5">생산 현황 모니터링</h3>
+            <div class="text-center my-3">
+                <button type="button" th:onclick="|location.href='@{/products}'|" class="btn btn-primary">품질 관리</button>
+                <button type="button" id="production-stop" class="btn btn-danger">생산 중단</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="text-center text-white col-md-6 mb-4" id="first">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div>
+                            <canvas id="processOne"></canvas>
+                        </div>
+                    </div>
+                    <div class="d-none d-md-block col-md-4 my-auto">
+                        <p id="firstText" class="fs-3 pt-3"></p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="text-center text-white col-md-6 mb-4" id="second" >
+                <div class="row">
+                    <div class="col-md-8">
+                        <div>
+                            <canvas id="processTwo"></canvas>
+                        </div>
+                    </div>
+                    <div class="d-none d-md-block col-md-4 my-auto">
+                        <p id="secondText" class="fs-3 pt-3"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center text-white col-md-6 mb-4" id="third" >
+                <div class="row">
+                    <div class="col-md-8">
+                        <div>
+                            <canvas id="processThree"></canvas>
+                        </div>
+                    </div>
+                    <div class="d-none d-md-block col-md-4 my-auto">
+                        <p id="thirdText" class="fs-3 pt-3"></p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="text-center text-white col-md-6 mb-4" id="fourth" >
+                <div class="row">
+                    <div class="col-md-8">
+                        <div>
+                            <canvas id="processFour"></canvas>
+                        </div>
+                    </div>
+                    <div class="d-none d-md-block col-md-4 my-auto">
+                        <p id="fourthText" class="fs-3 pt-3"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragment/pageup::pageup}"></div>
+</body>
+
+<!-- 생산 중단 버튼 클릭 시 localhost:8080/stop을 호출하여 생산을 멈추는 AJAX 코딩 -->
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $("#production-stop").click(function () {
+            Swal.fire({
+                icon: 'warning',
+                title: '정말로 생산 중단하시겠습니까?',
+                text: "중단 시 현재까지 내린 생산 지시가 모두 취소 됩니다.",
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: '중단',
+                cancelButtonText: '취소'
+            }).then((result) => {
+                if(result.isConfirmed){
+                    $.ajax({
+                        type: "POST",
+                        url: "/stop",
+                        success: function (response) {
+                            console.log("Production stopped successfully");
+                            // 추가 작업이 필요한 경우 여기에 작성
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error stopping production:", error);
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+</html>

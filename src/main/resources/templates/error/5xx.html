@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head th:insert="~{fragment/header :: header}">
+</head>
+<head>
+    <style>
+        #containerDiv {
+            margin-top: 150px;
+        /*    width: 600px;*/
+        /*    height: 300px;*/
+        /*    border: 3px solid white;*/
+        /*    padding: 50px;*/
+        }
+
+        #containerDiv>h1 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container text-center text-white col-auto" id="containerDiv">
+    <h1>일시적인 서버의 오류로 <br>요청을 처리하지 못하였습니다.</h1>
+    <p>잠시 후 다시 시도를 부탁드리겠습니다.</p>
+    <button type="button" class="btn btn-lg btn-primary" th:onclick="|location.href='@{/}'|">홈으로 돌아가기</button>
+    <button type="button" class="btn btn-lg btn-primary" onclick="goBack()">이전 페이지</button>
+</div>
+<div th:replace="~{fragment/pageup::pageup}"></div>
+</body>
+</html>

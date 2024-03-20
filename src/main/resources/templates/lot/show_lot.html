@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/header :: header}">
+</head>
+<body>
+<div th:replace="~{fragment/navbar::navbar}" class="navbar-fixed mb-3"></div>
+<!--<div th:insert="~{fragment/bodyheader :: bodyHeader}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url(/img/공자배경.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; background-attachment: scroll" class="vh-25"></div>-->
+<div class="container">
+    <h3 class="fw-bold text-center text-warning ">Lot 조회</h3>
+    <div class="text-end">
+        <a href="/" class="btn btn-lg btn-primary mb-4">돌아가기</a>
+    </div>
+    <table class="table table-dark table-hover text-center caption-top">
+        <caption class="fs-3 fw-bold">Lot 현황</caption>
+        <thead>
+        <tr class="table-primary">
+            <th>Lot 번호</th>
+            <th>주문 수량</th>
+            <th>양품</th>
+            <th>불량품</th>
+            <th>로트 상태</th>
+            <th>시작 시간</th>
+            <th>종료 시간</th>
+            <th>Lot 전산 등록</th>
+            <th>전산 등록 상태</th>
+            <th>전산 등록자 사번</th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        <tr th:each="lot : ${lots}">
+            <td th:text="${lot.lot_id}"></td>
+            <td th:text="${lot.output}+개"></td>
+            <td th:text="${lot.s_count}+개"></td>
+            <td th:text="${lot.f_count}+개"></td>
+
+            <td th:if="${lot.status == 0}" th:text="'생산 전'"></td>
+            <td th:if="${lot.status == 1}" th:text="'생산 중'"></td>
+            <td th:if="${lot.status == 2}" th:text="'생산 완료'"></td>
+
+            <td th:text="${lot.start_time}"></td>
+            <td th:text="${lot.end_time}"></td>
+            <td>
+                <a class="btn btn-primary" th:href="|@{lots/{id}/detail(id=${lot.lot_id})}|">
+                    상세보기
+                </a>
+            </td>
+            <td th:text="${lot.manager_id != null} ? 등록 : 미등록"></td>
+            <td th:text="${lot.manager_id}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li>
+                    <a class="page-link" th:classappend="${currentPage == 1} ? 'disabled' : ''" th:href="@{/lots(pageNo=${currentPage - 1})}" tabindex="-1">Previous</a>
+                </li>
+                <!-- 현재 페이지를 중심으로 앞뒤로 2페이지씩만 표시 -->
+                <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+                    th:class="${currentPage == i} ? 'active' : ''"
+                    th:if="${currentPage - 2 <= i && i <= currentPage + 2}">
+                    <a class="page-link" th:href="@{/lots(pageNo=${i})}">
+                        <span th:text="${i}">1</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="page-link" th:classappend="${currentPage == totalPages} ? 'disabled' : ''" th:href="@{/lots(pageNo=${currentPage + 1})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </nav>
+</div>
+<div th:replace="~{fragment/pageup::pageup}"></div>
+</body>
+</html>

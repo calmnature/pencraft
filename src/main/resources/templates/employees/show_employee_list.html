@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/header :: header}">
+</head>
+<body>
+<div th:replace="~{fragment/navbar::navbar}" class="navbar-fixed mb-3"></div>
+<!--<div th:insert="~{fragment/bodyheader :: bodyHeader}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url(/img/공자배경.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; background-attachment: scroll" class="vh-25"></div>-->
+<div class="container">
+    <table class="table table-dark table-hover text-center">
+        <thead>
+        <tr class="table-primary">
+            <th>사번</th>
+<!--            <th>지울거</th>-->
+            <th>이름</th>
+            <th>비밀번호</th>
+            <th>직급</th>
+            <th>비밀번호초기화</th>
+            <th>회원 삭제</th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <tr th:each="employee : ${employeesList}">
+                <td th:text="${employee.id}"></td>
+                <td th:text="${employee.name}"></td>
+                <td th:text="${employee.password}"></td>
+                <td th:text="${employee.role}"></td>
+                <td><button type="button" class="btn btn-outline-warning btn-sm init-btn" th:value="${employee.id}">초기화</button></td>
+                <td><button type="button" id="delete" th:if="${employee.id != 10000}" class="btn btn-danger btn-sm delete-btn" th:value="${employee.id}">삭제</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        const initBtns = document.querySelectorAll(".init-btn");
+        initBtns.forEach(btn => {
+            btn.addEventListener("click", function (e) {
+                const id = e.target.value;
+                $.ajax({
+                    type: "GET",
+                    url: "/employees/" + id,
+                    data : {
+                        "id" : id
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '초기화 성공',
+                            text: '비밀번호가 초기화 되었습니다.\n비밀번호는 사번과 동일합니다.'
+                        }).then(result => {
+                            location.reload();
+                        })
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '초기화 실패',
+                            text: '비밀번호 초기화에 실패하였습니다.'
+                        })
+                    }
+                });
+            });
+        })
+        const deleteBtns = document.querySelectorAll(".delete-btn");
+        deleteBtns.forEach(btn => {
+            btn.addEventListener("click", function (e) {
+                const id = e.target.value;
+                $.ajax({
+                    type: "GET",
+                    url: "/employees/delete/" + id,
+                    data : {
+                        "id" : id
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '삭제 성공',
+                            text: id + '번 사원이 삭제되었습니다.'
+                        }).then(result => {
+                            location.reload();
+                        })
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '삭제 실패',
+                            text: '삭제 실패하였습니다.'
+                        })
+                    }
+                });
+            })
+        })
+    });
+</script>
+<div th:replace="~{fragment/pageup::pageup}"></div>
+</body>
+</html>

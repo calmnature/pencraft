@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+#dayDiv, #monthDiv, #yearDiv {
+    border : 5px solid white;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.videoDiv {
+    background-color: rgba(0,0,0,0.3);
+}
+
+.labelText {
+    color : #EDB240;
+}

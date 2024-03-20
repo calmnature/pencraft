@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+
+<body>
+<div th:fragment="navbar">
+    <div class="container-fluid w-100" id="nav">
+        <div class="row">
+            <div class="col-12 text-end t" id="Jnav">
+                <button class="btn mt-3 " type="button" id="toggleBtn" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="white" class="bi bi-list"
+                         viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+                    </svg>
+                </button>
+
+                <div class="text-center mb-5">
+                    <a id="logo2" href="/home"><img style="width: 170px; height: 120px; position: absolute; top: 5px; left:50%; transform: translateX(-50%);"
+                                                    src="/img/home-logo.png"></a>
+                </div>
+
+                <div class="row fs-5" style="margin-top: -3px;" id="navmenu">
+
+
+                    <!-- 왼쪽에 배치될 항목들 -->
+                    <div class=" col-1 text-start">
+                        <a class="logo" href="/home"><img src="/img/로고%20흰색(누끼).png" style="height: 110px"></a>
+                    </div>
+
+
+                    <div class="col-2 text-center nav_item1">
+                        <a href="/order" class="text-decoration-none text-dark  mx-5 nav_item1 text-white">
+                            <p>생산 지시</p></a>
+                    </div>
+
+                    <div class="col-2 text-center nav_item3">
+                        <a href="/monitoring" class="text-decoration-none text-dark  mx-5 text-white"><p>모니터링</p></a>
+                    </div>
+
+                    <div class="col-2 text-center nav_item2">
+                        <a href="/products" class="text-decoration-none text-dark mx-5 text-white"><p>품질 관리</p></a>
+                    </div>
+
+                    <div class="col-2 text-center nav_item4">
+                        <a href="/products/errors" class="text-decoration-none text-dark  mx-5 text-white"><p>에러 관리</p>
+                        </a>
+                    </div>
+
+                    <div class="col-2 text-center nav_item4">
+                        <a href="/lots" class="text-decoration-none text-dark  mx-5 text-white"><p>Lot 관리</p>
+                        </a>
+                    </div>
+
+                    <div class="col-1 text-end nav_item5 ">
+                        <a href="/logout" class="text-decoration-none text-dark  mx-5 text-white"><img
+                                style="height: 70px " src="/img/로그아웃.png" alt="로그아웃" id="logout"></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="submenu_m offcanvas offcanvas-end d-flex justify-content-center align-items-center" tabindex="-1"
+         id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <h5 class="offcanvas-title " id="offcanvasRightLabel"><a href="/logout"
+                                                                 class="text-decoration-none fw-bold mt-2 mb-5 text-danger">로그아웃</a>
+        </h5>
+        <div class="offcanvas-body d-flex align-items-center justify-content-center">
+            <div class="row" id="canvasitem">
+                <div class="col-12 text-center mb-5">
+                    <p class="">
+                        <a href="/" class="text-decoration-none text-dark">홈</a>
+                    </p>
+                </div>
+
+                <div class="col-12 text-center mb-5">
+                    <p class="">
+                        <a href="/order" class="text-decoration-none text-dark">생산 지시</a>
+                    </p>
+                </div>
+
+                <div class="col-12 text-center mb-5">
+                    <p class="">
+                        <a href="/monitoring" class="text-decoration-none text-dark">모니터링</a>
+                    </p>
+                </div>
+
+                <div class="col-12 text-center mb-5">
+                    <p class="">
+                        <a href="/products" class="text-decoration-none text-dark">품질 관리</a>
+                    </p>
+                </div>
+
+                <div class="col-12 text-center mb-5">
+                    <p>
+                        <a href="/products/errors" class="text-decoration-none text-dark">에러 관리</a>
+                    </p>
+                </div>
+
+                <div class="col-12 text-center mb-5">
+                    <p>
+                        <a href="/lots" class="text-decoration-none text-dark">Lot 관리</a>
+                    </p>
+                </div>
+                <div class="col-12 text-center mb-5">
+                    <p>
+                        <a href="/teamlist" class="text-decoration-none fw-bold text-warning">팀원 소개</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pageup_container">
+    <button class="pageup">
+        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor"
+             fill-rule="evenodd" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+        </svg>
+    </button>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#toggleBtn").click(function () {
+            $(".submenu_m").toggle("slow");
+        })
+    });
+
+    $(document).ready(function () {
+        $(".pageup_container").click(function () {
+            $("html, body").animate({scrollTop: 0}, "slow");
+        });
+    });
+</script>
+</body>
+</html>
+    

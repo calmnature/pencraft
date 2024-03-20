@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/header :: header}"></head>
+
+<body>
+<div th:replace="~{fragment/navbar::navbar}" class="navbar-fixed mb-3"></div>
+<!--<div th:insert="~{fragment/bodyheader :: bodyHeader}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url(/img/공자배경.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; background-attachment: scroll" class="vh-25"></div>-->
+<div class="container">
+    <h3 class="fw-bold text-center text-warning mb-5">품질 관리</h3>
+<!--    <div class="text-end">-->
+<!--        <a href="/products/errors" class="btn btn-danger mb-3">에러내역</a>-->
+<!--    </div>-->
+    <table class="table table-dark table-hover text-center">
+        <thead>
+        <tr class="table-primary">
+            <th>제품번호</th>
+            <th>Lot 번호</th>
+            <th>잉크용량</th>
+            <th>닙 깊이</th>
+            <th>바디조립 여부</th>
+            <th>뚜껑조립 여부</th>
+            <th>적합/부적합</th>
+            <th>시작시간</th>
+            <th>종료시간</th>
+            <th>세부사항</th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        <tr th:each="product : ${products}">
+            <td th:text="${product.product_id}"></td>
+            <td class="p-md-2 p-1">
+                <div class="d-flex align-self-center justify-content-center">
+                    <a th:text="${product.lot != null ? product.lot.lot_id : 'N/A'}" th:href="|@{/lots/{id}/detail(id=${product.lot.lot_id})}|" class="fw-bold  link-underline-opacity-0 link-light link-opacity-50-hover"></a>
+                </div>
+            </td>
+            <td th:text="${product.volume + ' ml'}"></td>
+            <td th:text= "${product.nib == null} ? '' : ${product.nib + 'mm'}"></td>
+            <td th:text="${product.assembly_body}"></td>
+            <td th:text="${product.assembly_cap}"></td>
+            <td th:if="${product.acceptance == 'P'}" class="text-primary">적합</td>
+            <td th:if="${product.acceptance == 'F'}" class="text-danger">부적합</td>
+            <td th:text="${product.lot.start_time}"></td>
+            <td th:text="${product.lot.end_time}"></td>
+            <td>
+                <button type="button" class="btn btn-primary"
+                        data-bs-toggle="modal" data-bs-target="#qcModal"
+                        th:attr="onclick='openModal(\'' + ${product.product_id} + '\', \'' + ${product.lot.lot_id} + '\', \'' + ${product.volume} + '\', \'' + ${product.getNib} + '\', \'' + ${product.assembly_body} + '\', \'' + ${product.assembly_cap} + '\', \'' + ${product.acceptance} + '\', \'' + ${product.lot.start_time} + '\', \'' + ${product.lot.end_time} + '\', \'' + ${product.getComment()} + '\')'">
+                    수정
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!--        제품 품질관리 창(모달)-->
+    <div class="modal fade" id="qcModal" tabindex="-1" aria-labelledby="qcLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-secondary-subtle">
+                    <h1 class="modal-title fs-2 fw-bold" id="qclLabel">품질관리 데이터 등록</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body px-5" style="background-color: rgba(41,17,8,0.22);">
+                    <form class="row g-3" method="post" th:action="@{/products/commentSave}">
+                        <div class="col-6">
+                            <h5>제품 번호: <span id="productId" class="fw-bold"></span></h5>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Lot 번호: <span id="lot_id" class="fw-bold"></span></h5>
+                        </div>
+                        <hr>
+                        <div class="col-md-6">
+                            <h5>잉크 용량: <span id="ink_capacity" class="fw-bold"></span> ml</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>닙 깊이: <span id="nib_depth" class="fw-bold"></span></h5>
+                        </div>
+                        <hr>
+                        <div class="col-md-6">
+                            <h5 class="fs-6">바디 결합 여부: <span id="assembly_body" class="fw-bold fs-6"></span></h5>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="fs-6">뚜껑 결합 여부: <span id="assembly_cap" class="fw-bold fs-6"></span></h5>
+                        </div>
+                        <hr>
+                        <div class="col-md-12">
+                            <h5 class="mb-3">적합/부적합 여부: </h5>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="acceptance" id="acceptanceG" value="P">
+                                <label class="form-check-label fw-bold" for="acceptanceG">
+                                    적합
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="acceptance" id="acceptanceB" value="F">
+                                <label class="form-check-label fw-bold" for="acceptanceB">
+                                    부적합
+                                </label>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col-md-12">
+                            <h5>생산 시작: <span id="start_date" class="fw-bold"></span></h5>
+                        </div>
+                        <div class="col-md-12">
+                            <h5>생산 종료: <span id="end_date" class="fw-bold"></span></h5>
+                        </div>
+                        <hr>
+                        <!--                        comment에 들어갈 내용 적는 부분 -->
+                        <div class="input-group col-md-12 input-group-lg">
+                            <span class="input-group-text fw-bold">세부 부적합 <br>사유 </span>
+                            <textarea id="comment" name="comment" class="form-control" rows="8" aria-label="세부 부적합 사유">
+
+                            </textarea>
+                        </div>
+                        <!--                        내가 선택한 제품의 comment를 바꿔야하니까 그 제품을 특정할 수 있는 아이디를 form에 부여-->
+                        <input type="hidden" id="product_id" name="product_id">
+                    </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">닫기</button>
+                        <!--                        onclick시 Conroller에 데이터를 보내는 자바 스크립트 실행-->
+                        <button type="submit" class="btn btn-primary" onclick="saveComment()">수정</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li>
+                <a class="page-link" th:classappend="${currentPage == 1} ? 'disabled' : ''" th:href="@{/products(pageNo=${currentPage - 1})}" tabindex="-1">Previous</a>
+            </li>
+
+            <!-- 페이지 번호를 순회하며 렌더링 -->
+            <!--<li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${currentPage == i} ? 'active' : ''">
+                <a class="page-link" th:href="@{/products(pageNo=${i})}">
+                    <span th:text="${i + 1}">1</span>
+                </a>
+            </li>-->
+            <!-- 페이지를 5개씩 렌더링 -->
+            <!--<li th:each="i : ${#numbers.sequence(currentPage / 5 * 5, (currentPage / 5 + 1) * 5 - 1)}"
+                th:class="${currentPage == i} ? 'active' : ''">
+                <a class="page-link" th:href="@{/products(pageNo=${i})}">
+                    <span th:text="${i + 1}">1</span>
+                </a>
+            </li> -->
+            <!-- 현재 페이지를 중심으로 앞뒤로 2페이지씩만 표시 -->
+            <!--                    <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"-->
+            <!--                        th:class="${currentPage == i} ? 'active' : ''"-->
+            <!--                        th:classappend="${i == -1} ? 'd-none'"-->
+            <!--                        th:if="${currentPage - 2 <= i && i <= currentPage + 2}">-->
+            <!--                        <a class="page-link" th:href="@{/products(pageNo=${i})}">-->
+            <!--&lt;!&ndash;                            <span th:text="${i + 1}">1</span>&ndash;&gt;-->
+            <!--                            <span th:text="${i + 1}">1</span>-->
+            <!--                        </a>-->
+            <!--                    </li>-->
+
+
+            <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+                th:class="${currentPage == i} ? 'active' : ''"
+                th:if="${currentPage - 2 <= i && i <= currentPage + 2 && i != 0}">
+                <a class="page-link" th:href="@{/products(pageNo=${i})}">
+                    <!--                            <span th:text="${i + 1}">1</span>-->
+                    <span th:text="${i}">1</span>
+                </a>
+            </li>
+
+            <li>
+                <a class="page-link" th:classappend="${currentPage == totalPages} ? 'disabled' : ''" th:href="@{/products(pageNo=${currentPage + 1})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+    <script src="/js/productShow.js"></script>
+</div>
+<div th:replace="~{fragment/pageup::pageup}"></div>
+</body>
+</html>

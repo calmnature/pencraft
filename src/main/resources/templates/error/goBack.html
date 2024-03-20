@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/header :: header}"></head>
+<body style="background-color: rgba(29,0,14,0.22)" class="p-0">
+    <div th:insert="~{fragment/bodyheader :: bodyHeader}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url(/img/공자배경.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; background-attachment: scroll" class="vh-25 wh-100"></div>
+    <div class="container">
+        <div class="mx-auto text-center col-auto">
+            <h1 class="fw-bold">님은 스태프입니다. 돌아가세요</h1>
+        </div>
+    </div>
+    <div th:replace="~{fragment/pageup::pageup}"></div>
+</body>
+</html>

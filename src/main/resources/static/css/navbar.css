@@ -1,0 +1,233 @@
+/*@charset "UTF-8";*/
+
+*{
+    margin: 0; padding: 0;
+}
+
+@media (max-width: 1024px) {
+    /* 화면 너비가 1024px 이하일 때 적용되는 스타일 */
+    #nav_item{
+        font-size: 15px; /* 폰트 크기 조절 */
+    }
+}
+
+@media only screen and (min-width :801px) {
+    #toggleBtn {
+        display: none;
+    }
+}
+
+@media(max-width: 800px) {
+    .navbar{
+        flex-direction: column;
+        #offcanvasRight{
+            display: none;
+        }
+    }
+}
+/* 이미지를 전체화면 꽉채움 */
+
+#navmenu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+#logout{
+    filter: invert(100%) brightness(100%) saturate(0%);
+}
+#navbutton{
+    background-size: cover;
+}
+body{
+    position: relative;
+
+}
+.pageup, .pageup-container {
+
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border: none;
+    outline: none;
+    background: none;
+    background-size: cover;
+}
+#nav{
+
+}
+
+/*navbar.html에서 가져온 내부 스타일 시트 부분*/
+@media (max-width: 800px) {
+    body {
+        background-image: url("../img/펜.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+}
+
+@media (min-width: 800px) {
+    body {
+        background-color: rgba(29,0,14,0.3);
+        background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)), url('../img/paint-2174689_1280.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-attachment: fixed;
+        /*background-image: url("/img/로봇팔2.jpg");*/
+    }
+}
+
+@media (min-width: 800px) {
+    #toggleBtn {
+        display: none;
+    }
+}
+
+
+.offcanvas-end {
+    width: 40px;
+    max-width: 30%;
+}
+
+.offcanvas-body {
+    font-size: 15px;
+}
+
+.offcanvas-title {
+    font-size: 20px;
+}
+
+@media (max-width: 800px) {
+    .nav_item1, .nav_item2, .nav_item3, .nav_item4, .nav_item5 {
+        display: none;
+    }
+}
+
+@media (max-width: 800px) {
+    .logo {
+        position: fixed;
+        top: 0%;
+        left: 0%;
+        width: 30px;
+    }
+}
+
+@media (max-width: 425px) {
+    img {
+        height: 20px;
+        width: 50px;
+
+    }
+}
+
+@media(max-width: 425px){
+    th , td{
+        font-size: 5px;
+    }
+}
+
+@media (max-width: 800px) {
+    body {
+        background: url("../img/펜.jpg"), url("../img/home-logo.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        position: relative;
+
+        /*background : url("../images/bg.png") repeat-x top fixed, url("../images/blueheart.png")*/
+        /*no-repeat center fixed, url("../images/bg_line.gif") repeat-x bottom fixed #ffff00;*/
+    }
+}
+
+@media (min-width: 800px) {
+    body {
+        background-color: rgba(29, 0, 14, 0.22);
+        background-image: url('../img/allbackground.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-attachment: fixed;
+
+
+        /*background-image: url("/img/로봇팔2.jpg");*/
+
+
+    }
+}
+
+@media (max-width: 800px) {
+    .logo {
+        display: none;
+    }
+}
+
+@media (min-width: 800px) {
+    #toggleBtn {
+        display: none;
+    }
+}
+
+
+.offcanvas-end {
+    width: 40px;
+    max-width: 30%;
+}
+
+.offcanvas-body {
+    font-size: 15px;
+}
+
+.offcanvas-title {
+    font-size: 20px;
+}
+
+@media (max-width: 800px) {
+    .nav_item1, .nav_item2, .nav_item3, .nav_item4, .nav_item5 {
+        display: none;
+    }
+}
+
+@media (max-width: 800px) {
+    .logo {
+        position: fixed;
+        top: 0%;
+        left: 0%;
+        width: 30px;
+        /* 내비게이션 바에 필요한 다른 스타일 추가 */
+    }
+}
+
+@media (max-width: 425px) {
+    img {
+        height: 20px;
+        width: 50px;
+
+    }
+}
+
+/*각 테이블 반응형 폰트 변경*/
+@media screen and (max-width: 425px) {
+    th, td {
+        font-size: 10px;
+        font-weight: bold;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 990px ) {
+    th, td {
+        font-size: 20px;
+    }
+}
+
+@media screen and (min-width: 425px) and (max-width: 767px ) {
+    th, td {
+        font-size: 25px;
+    }
+}
+
+
+@media screen and (min-width: 800px) {
+    #logo2 {
+        display: none;
+    }
+}

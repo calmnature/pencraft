@@ -1,0 +1,18 @@
+2024-03-12T11:37:09.570+09:00  INFO 24044 --- [nboundChannel-4] c.example.pencraft.service.LotService    :
+
+
+LotList = [
+Lot(lotId=6, output=2, s_count=45, f_count=2, start_time=2024-03-08T13:00, end_time=2024-03-08T13:10, first_start=2024-03-08T14:44:45.436882, first_end=2024-03-08T14:44:46.590057, second_start=2024-03-08T14:44:47.601776, second_end=2024-03-08T14:44:49.097556, third_start=2024-03-08T14:44:50.103895, third_end=2024-03-08T14:44:50.327387, fourth_start=2024-03-08T14:44:51.334801, fourth_end=2024-03-08T14:44:51.551700, status=2, manager_id=null, detail=null),
+
+Lot(lotId=7, output=5, s_count=90, f_count=8, start_time=2024-03-09T13:00, end_time=2024-03-09T13:10, first_start=2024-03-08T14:45:55.852947, first_end=2024-03-08T14:45:56.422289, second_start=2024-03-08T14:45:57.426205, second_end=2024-03-08T14:45:57.972972, third_start=2024-03-08T14:45:58.987249, third_end=2024-03-08T14:45:59.427481, fourth_start=2024-03-08T14:46:00.440112, fourth_end=2024-03-08T14:46:00.877859, status=2, manager_id=null, detail=null),
+
+Lot(lotId=8, output=10, s_count=117, f_count=3, start_time=2024-03-10T13:00, end_time=2024-03-10T13:10, first_start=2024-03-11T11:26:46.812192, first_end=2024-03-11T11:26:50.854674, second_start=2024-03-11T11:26:52.872950, second_end=2024-03-11T11:26:56.098783, third_start=2024-03-11T11:26:58.112164, third_end=2024-03-11T11:27:00.937792, fourth_start=2024-03-11T11:27:02.953665, fourth_end=2024-03-11T11:27:05.375330, status=2, manager_id=null, detail=null),
+
+Lot(lotId=9, output=10, s_count=200, f_count=0, start_time=2024-03-11T11:34:34.734329, end_time=2024-03-11T11:34:55.718070, first_start=2024-03-11T11:34:34.734329, first_end=2024-03-11T11:34:38.791109, second_start=2024-03-11T11:34:40.798110, second_end=2024-03-11T11:34:44.431624, third_start=2024-03-11T11:34:46.440173, third_end=2024-03-11T11:34:50.068076, fourth_start=2024-03-11T11:34:52.075385, fourth_end=2024-03-11T11:34:55.718070, status=2, manager_id=null, detail=null),
+
+Lot(lotId=10, output=5, s_count=195, f_count=5, start_time=2024-03-11T12:50:05.804193, end_time=2024-03-11T12:50:19.942482, first_start=2024-03-11T12:50:05.804193, first_end=2024-03-11T12:50:07.825326, second_start=2024-03-11T12:50:09.832574, second_end=2024-03-11T12:50:11.857739, third_start=2024-03-11T12:50:13.874465, third_end=2024-03-11T12:50:15.906337, fourth_start=2024-03-11T12:50:17.909552, fourth_end=2024-03-11T12:50:19.942482, status=2, manager_id=null, detail=null),
+
+Lot(lotId=16, output=10, s_count=8, f_count=2, start_time=2024-03-12T11:00:14.365257, end_time=2024-03-12T11:00:35.766950, first_start=2024-03-12T11:00:14.365257, first_end=2024-03-12T11:00:18.415804, second_start=2024-03-12T11:00:20.427200, second_end=2024-03-12T11:00:24.469089, third_start=2024-03-12T11:00:26.476783, third_end=2024-03-12T11:00:30.525496, fourth_start=2024-03-12T11:00:32.541731, fourth_end=2024-03-12T11:00:35.766950, status=2, manager_id=null, detail=null),
+
+Lot(lotId=17, output=20, s_count=14, f_count=6, start_time=2024-03-12T11:12:01.041813, end_time=2024-03-12T11:12:38.611975, first_start=2024-03-12T11:12:01.041813, first_end=2024-03-12T11:12:09.114010, second_start=2024-03-12T11:12:11.128830, second_end=2024-03-12T11:12:19.209486, third_start=2024-03-12T11:12:21.212403, third_end=2024-03-12T11:12:29.313895, fourth_start=2024-03-12T11:12:31.327707, fourth_end=2024-03-12T11:12:38.611975, status=2, manager_id=null, detail=null)
+]

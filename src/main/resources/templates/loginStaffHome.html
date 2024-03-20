@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/header :: header}">
+</head>
+<head>
+    <script src="/js/home.js"></script>
+    <link href="/css/loginhome.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragment/navbar::navbar}" class="navbar-fixed mb-3"></div>
+<div class="container-fluid body-content p-0">
+    <div style="padding-top: 30px;">
+        <div class="text-end">
+            <p th:text="|${employees.name} 님 환영합니다.|" class="  text-end text-white fs-5 fw-bold text-black mx-5">
+            </p>
+            <p class=" text-end text-white mx-5" th:text="${employees.role == 'staff'}? '직급 : 사용자' : 'ERROR'"></p>
+
+            <button type="button" class="btn btn-lg border border-3 text-light mx-5" data-bs-toggle="modal"
+                    data-bs-target="#econtroll" th:if="${employees.role == 'admin'}">회원 관리
+            </button><br>
+            <button type="button" th:onclick="|location.href='@{/change-password}'|" class="btn btn-lg border border-3 text-light mx-5">비밀번호 변경
+            </button>
+
+            <div class="modal fade" id="econtroll" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title fw-bold fs-2">회원 관리</h5>
+                        </div>
+                        <div class="modal-body d-flex">
+                            <a href="/employees" class="text-decoration-none link-body-emphasis fw-bold">
+                                <img src="/img/조회.png" alt="회원조회" class=" link-img img-fluid">
+                                <p class="text-center fs-2 pe-lg-5 mt-4">회원 조회</p>
+                            </a>
+                            <a href="/employees/new" class="text-decoration-none link-body-emphasis fw-bold">
+                                <img src="/img/조회.png" alt="회원조회" class=" link-img img-fluid">
+                                <p class="text-center fs-2 pe-lg-5 mt-4">회원 생성</p>
+                            </a>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="container text-center my-4 videoDiv d-md-none">
+                <div class="row">
+                    <h5 class="text-white my-3">1공정</h5>
+                    <div class="ratio ratio-16x9">
+                        <iframe
+                                src="https://www.youtube.com/embed/q6piuBMCaiE?autoplay=1&mute=1&loop=1si=evvPz2q301s5i_rp&amp;clip=UgkxW408ZbhJb-PKxo-kln4AiLztTlJjhUIP&amp;clipt=ELzGEhjU_xI"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen></iframe>
+                    </div>
+                    <h5 class="text-white my-3">2공정</h5>
+                    <div class="ratio ratio-16x9">
+                        <iframe
+                                src="https://www.youtube.com/embed/q6piuBMCaiE?autoplay=1&mute=1&loop=1si=9LwhuPFfeVTDlx3A&amp;clip=Ugkx6jz6Ppq9wICqLdAs-p6NhdSNXaZ5zULU&amp;clipt=EPbGDRj-7Q0"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen></iframe>
+                    </div>
+
+                    <h5 class="text-white my-3">3공정</h5>
+                    <div class="ratio ratio-16x9">
+                        <iframe
+                                src="https://www.youtube.com/embed/q6piuBMCaiE?autoplay=1&mute=1&loop=1si=LObk87Tp86gIacUH&amp;clip=Ugkx1eg6W2cduGIFZBuXo-2K39DGFeUanJkL&amp;clipt=ENWqExiwhhQ"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen></iframe>
+                    </div>
+                    <h5 class="text-white my-3">4공정</h5>
+                    <div class="ratio ratio-16x9">
+                        <iframe
+                                src="https://www.youtube.com/embed/q6piuBMCaiE?autoplay=1&mute=1&loop=1si=7BLIomlMsle79KuF&amp;clip=Ugkx6GeSh6sMWI-BqGoShyqupL2-ll_WVaDF&amp;clipt=EO-nFhiQhhc"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container text-center my-4 videoDiv d-none d-md-block">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="text-white my-3">1공정</h5>
+                        <div class="ratio ratio-16x9">
+                            <iframe
+                                    src="https://www.youtube.com/embed/q6piuBMCaiE?autoplay=1&mute=1&loop=1si=evvPz2q301s5i_rp&amp;clip=UgkxW408ZbhJb-PKxo-kln4AiLztTlJjhUIP&amp;clipt=ELzGEhjU_xI"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-white my-3">2공정</h5>
+                        <div class="ratio ratio-16x9">
+                            <iframe
+                                    src="https://www.youtube.com/embed/q6piuBMCaiE?autoplay=1&mute=1&loop=1si=9LwhuPFfeVTDlx3A&amp;clip=Ugkx6jz6Ppq9wICqLdAs-p6NhdSNXaZ5zULU&amp;clipt=EPbGDRj-7Q0"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="text-white my-3">3공정</h5>
+                        <div class="ratio ratio-16x9">
+                            <iframe
+                                    src="https://www.youtube.com/embed/q6piuBMCaiE?autoplay=1&mute=1&loop=1si=LObk87Tp86gIacUH&amp;clip=Ugkx1eg6W2cduGIFZBuXo-2K39DGFeUanJkL&amp;clipt=ENWqExiwhhQ"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="text-white my-3">4공정</h5>
+                        <div class="ratio ratio-16x9 mb-4">
+                            <iframe
+                                    src="https://www.youtube.com/embed/q6piuBMCaiE?autoplay=1&mute=1&loop=1si=7BLIomlMsle79KuF&amp;clip=Ugkx6GeSh6sMWI-BqGoShyqupL2-ll_WVaDF&amp;clipt=EO-nFhiQhhc"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container" id="chartDiv">
+                <div class="row text-center text-white mb-5 py-5" id="dayDiv" >
+                    <div class="col-md-10 m-auto" style="">
+                        <div style="height: 30vh; width: 65vw; margin:0 auto;">
+                            <canvas id="daycanvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="d-none d-md-block col-md-2 align-self-center">
+                        <p class="fs-5" id="dayText"></p>
+                    </div>
+                    <!--    <p id="dayText" class="pt-3"></p>-->
+                </div>
+                <div class="row text-center text-white mb-5 py-5" id="monthDiv" >
+                    <div class="col-md-10 m-auto" style="">
+                        <div style="height: 30vh; width: 65vw; margin:0 auto;">
+                            <canvas id="monthcanvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="d-none d-md-block col-md-2 align-self-center">
+                        <p class="fs-5" id="monthText"></p>
+                    </div>
+                    <!--    <p id="dayText" class="pt-3"></p>-->
+                </div>
+                <div class="row text-center text-white mb-5 py-5" id="yearDiv" >
+                    <div class="col-md-10 m-auto" style="">
+                        <div style="height: 30vh; width: 65vw; margin:0 auto;">
+                            <canvas id="yearcanvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="d-none d-md-block col-md-2 align-self-center">
+                        <p class="fs-5" id="yearText"></p>
+                    </div>
+                    <!--    <p id="dayText" class="pt-3"></p>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragment/pageup::pageup}"></div>
+</body>
+</html>

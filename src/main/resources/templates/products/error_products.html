@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/header :: header}">
+</head>
+<body>
+<div th:replace="~{fragment/navbar::navbar}" class="navbar-fixed mb-3"></div>
+<!--<div th:insert="~{fragment/bodyheader :: bodyHeader}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url(/img/공자배경.jpg); background-repeat: no-repeat; background-position: center; background-size: cover; background-attachment: scroll" class="vh-25"></div>-->
+<div class="container">
+    <h3 class="fw-bold text-center text-warning mb-5">에러 관리</h3>
+<!--    <div class="text-end">-->
+<!--        <a href="/products" class="btn btn-primary mb-3">돌아가기</a>-->
+<!--    </div>-->
+    <table class="table table-dark table-hover text-center">
+        <thead>
+        <tr class="table-primary">
+            <th>제품번호</th>
+            <th>Lot 번호</th>
+            <th>에러 코드</th>
+            <th>에러 발생 공정</th>
+            <th>시작시간</th>
+            <th>종료시간</th>
+            <th>비고</th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        <tr th:each="product : ${products}" th:switch="${product.error_code}">
+            <td th:if="${product.error_code != null}" th:text="${product.product_id}"></td>
+            <td class="p-md-2 p-1">
+                <div class="d-flex align-self-center justify-content-center">
+                    <a th:if="${product.error_code != null}" th:text="${product.lot != null ? product.lot.lot_id : 'N/A'}" th:href="|@{/lots/{id}/detail(id=${product.lot.lot_id})}|" class="fw-bold link-underline-opacity-0 link-light link-opacity-50-hover"></a>
+                </div>
+            </td>
+            <td th:if="${product.error_code != null}" th:text="${product.error_code}"></td>
+
+            <th:block th:case="1">
+                <td  th:text="${errors.get(0).getError_detail()}"></td>
+            </th:block>
+            <th:block th:case="2">
+                <td  th:text="${errors.get(1).getError_detail()}"></td>
+            </th:block>
+            <th:block th:case="3">
+                <td  th:text="${errors.get(2).getError_detail()}"></td>
+            </th:block>
+            <th:block th:case="4">
+                <td  th:text="${errors.get(3).getError_detail()}"></td>
+            </th:block>
+            <th:block th:case="*">
+                <td>Undefine Error</td>
+            </th:block>
+
+            <td th:if="${product.error_code != null}" th:text="${product.lot.start_time}"></td>
+            <td th:if="${product.error_code != null}" th:text="${product.lot.end_time}"></td>
+            <td th:if="${product.error_code != null}" th:text="${product.comment}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li>
+                    <a class="page-link" th:classappend="${currentPage == 1} ? 'disabled' : ''" th:href="@{/products/errors(pageNo=${currentPage - 1})}" tabindex="-1">Previous</a>
+                </li>
+                <!-- 현재 페이지를 중심으로 앞뒤로 2페이지씩만 표시 -->
+                <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+                    th:class="${currentPage == i} ? 'active' : ''"
+                    th:if="${currentPage - 2 <= i && i <= currentPage + 2}">
+                    <a class="page-link" th:href="@{/products/errors(pageNo=${i})}">
+                        <span th:text="${i}">1</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="page-link" th:classappend="${currentPage == totalPages} ? 'disabled' : ''" th:href="@{/products/errors(pageNo=${currentPage + 1})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </nav>
+</div>
+<div th:replace="~{fragment/pageup::pageup}"></div>
+</body>
+</html>

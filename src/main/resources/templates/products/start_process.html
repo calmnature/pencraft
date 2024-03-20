@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/header :: header}">
+</head>
+<head>
+    <style>
+        .container{
+            margin-top: 100px;
+        }
+
+        /*#formDiv{*/
+        /*    border : 5px solid white;*/
+        /*    padding: 50px;*/
+        /*    width: 500px;*/
+        /*}*/
+
+        /*@media screen and(max-width: 550px){*/
+        /*    #formDiv{*/
+
+        /*        margin-right: 150px;*/
+        /*    }*/
+        /*}*/
+    </style>
+</head>
+<body>
+<div th:replace="~{fragment/navbar::navbar}" class="navbar-fixed mb-3"></div>
+<h3 class="fw-bold text-center text-warning ">생산 지시</h3>
+<div class="container">
+
+    <div id="formDiv" class="row  col-auto">
+        <form th:object="${countForm}" method="post">
+            <div class="mb-3 mt-3 col-auto ">
+                <label th:for="count" class="form-label fw-bold fs-4">수량 입력</label>
+                <input type="number" class="form-control" min="1" th:field="*{count}" required>
+            </div>
+            <div class="mb-5 col-auto">
+                <label th:for="standard_id" class="form-label fw-bold fs-4">규격</label>
+                <select class="form-select" id="standard_id" th:field="*{standard_id}" required>
+                    <option selected value="1">마카2mm</option>
+                    <option value="2">마카2mm대용량</option>
+                </select>
+                <button type="submit" class="btn btn-danger mt-3">시작</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+<div th:replace="~{fragment/pageup::pageup}"></div>
+</body>
+</html>
