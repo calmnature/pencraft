@@ -24,8 +24,10 @@
 <span id="1"></span>
 ## 🏭1. 프로젝트 소개
 ![메인페이지](https://raw.githubusercontent.com/calmnature/pencraft/main/GIF/home.png)
-해당 프로젝트는 5명의 인원으로 제품별 품질 관리와 라인 내 에러 정보 통합 모니터링 및 분석 시스템 구축이라는 스마트 팩토리의 주제를 선정하였을 때 실제 공장에서 일을 해본 적 경험이 없는 저희로서는 생각했을 때 직관적이고 단순하게 생각할 수 있는 보드마카를 생산하는 공장을 선정하였습니다.
-저희의 프로젝트에서는 제품을 생산하는 4가지의 공정이 있고, 생산 지시가 내려졌을 때 1공정부터 4공정까지 진행이 되고 각 공정마다 일정 시간이 지난 뒤 그래프를 통해 양품과 불량품의 개수가 보일 수 있도록 모니터링을 할 수 있게 하고 생산된 제품들은 품질 관리 페이지에서 제품별 품질 관리를 할 수 있는 기능을 가지고 있습니다. 생산되는 현황을 확인하고 생산된 제품의 품질을 관리할 수 있는 PEN CRAFT 프로젝트의 완성 과정을 소개해드리겠습니다.<br>
+<b>5명의 인원으로 1명의 Front-End, 3명의 Back-End, 1명의 DB 설계</b>로 구성된 프로젝트입니다.<br>
+저희의 주제는 <b>'제품별 품질 관리와 라인 내 에러 정보 통합 모니터링 및 분석 시스템 구축'</b>으로 보드마카를 생산하는 공장을 선정하였습니다.
+해당 프로젝트는 <b>제품 생산, 모니터링, 품짐 관리를 하는 기능을 주요 기능</b>으로 생각하고 구현하였습니다.<br>
+PEN CRAFT 프로젝트의 완성 과정을 소개해드리겠습니다.<br>
 [목차](#table)
 <br><br><br><br>
 
@@ -81,7 +83,7 @@
 <span id="4"></span>
 ## ✋4. 담당 업무
 #### [담당 업무]
-- 웹소켓과 쓰레드를 이용한 생산 공정 로직 구현
+- 웹소켓과 스레드를 이용한 생산 공정 로직 구현
 - 데이터 시각화를 위한 Javascript와 jQuery 지식 습득 및 공유
 - 전체적인 에러 해결 및 코드 리팩토링
 - 각각의 기능을 구현한 코드 통합
@@ -229,14 +231,8 @@
 ## ⌨7. 핵심 코드
 <details>
   <summary><b>1공정 ~ 4공정 생산 로직</b></summary>
-  <b>반복문을 이용하여 제품을 생산</b>하고 SEND_MESSAGE_DEALY와 PRODUCTION_DELAY를 이용하여 SEND_INDEX의 값을 만들어 msgSendCount와 같아지면 <b>메세지를 전송</b>하도록 설정 <br><br>
-  코드 리팩토링을 하면서 <b>각 공정에 관련된 메서드</b>인 processOne, processTwo, processThree, processFour로 나누고 <b>생산 로직 또한 따로 메서드</b>로 만들어 processOneLogic, processTwoLogic, processThreeLogic, processFourLogic으로 나누어 <b>추후 기능의 확장 같은 것을 고려하여 해당 부분만 변경할 수 있도록 코딩</b>
-  <br><br>
-  1공정 : 하나의 Lot에서 N개의 제품을 생성하기 때문에 Lot의 생성과 N개의 제품을 리스트에 담아 랜덤한 잉크를 주입하고 제품 규격과 비교하여 양품과 불량품을 리스트에 저장<br><br>
-  2공정 : 1공정에서 생산된 제품 중 양품인 제품만 닙(보드마카의 촉)을 삽입을 하는데 랜덤하게 닙 깊이를 삽입하여 제품 규격과 비교하여 불량품일 경우 양품&불량품 여부의 값을 불량으로 변경<br><br>
-  3공정 : 2공정에서 생산된 제품 중 양품인 제품만 몸체를 결합하는데 랜덤하게 결합 여부를 Y, N으로 하여 불량일 경우 양품&불량품 여부의 값을 불량으로 변경<br><br>
-  4공정 : 3공정에서 생단된 제품 중 양품인 제품만 뚜껑을 결합하는데 3공정과 동일하게 랜덤으로하여 불량품일 경우 양품&불량품 여부의 값을 불량으로 변경<br><br>
-  저장 : 현재까지 생산된 모든 제품과 해당 Lot을 Database에 저장<br>
+  <b>ExecutorService의 싱글 스레드</b>를 이용하여 제품 생산을 하여 클라이언트가 반복문 동안의 지연을 방지<br>
+  각 공정의 일정 주기에 따라 <b>WebSocketSenderService</b>를 이용하여 클라이언트 측으로 현재 생산 현황을 전송
   
 ```java
 @Service
@@ -254,7 +250,7 @@ public class ProcessService {
     private Lot lot; // Lot Entity
     private List<Product> productList; // 생산된 제품을 저장할 리스트
 
-    private ExecutorService executorService = Executors.newSingleThreadExecutor(); // 생산을 돌릴 쓰레드
+    private ExecutorService executorService = Executors.newSingleThreadExecutor(); // 생산을 돌릴 스레드
     private Future<?> productionFuture; // 생산을 담당할 Future
 
     // 사용자에게 양품, 불량품을 보내주기 위한 변수
@@ -323,7 +319,7 @@ public class ProcessService {
         webSocketSenderService.sendMessageToClient("/process/lastdata", lastDataMap);
     }
 
-    // executorService에 할당할 쓰레드 반환 메서드
+    // executorService에 할당할 스레드 반환 메서드
     private Runnable processTask(int count) {
         return () -> {
             try {
@@ -487,9 +483,9 @@ public class ProcessService {
 
 <details>
   <summary><b>웹소켓을 이용한 실시간 데이터 시각화</b></summary>
-  생산 로직에서 <b>서버는 일정 시간을 주기로 데이터를 전송</b>하여 클라이언트가 해당 데이터를 수신<br>
-  클라이언트측에서는 <b>Javascript의 SockJS를 이용하여 웹소켓과 연결하여 양방향 통신 구축</b><br>
-  <b>StompJS를 통하여 주소를 구독</b>하고 구독한 주소로부터 데이터를 수신받게 되면 수신한 데이터를 JSON.parse()를 이용하여 <b>자바스크립트 객체로 변환</b>하고 <b>해당 데이터를 ChartJS를 이용하여 그래프 시각화</b><br>
+  <b>서버는 일정 시간을 주기로 데이터를 전송</b>하여 클라이언트가 데이터를 수신<br>
+  클라이언트측에서는 <b>Javascript의 SockJS를 이용하여 웹소켓과 연결 -> 양방향 통신 구축</b><br>
+  <b>서버로부터 받은 데이터를 가지고 ChartJS를 이용하여 그래프 시각화</b><br>
   
 ```javascript
 var stompClient = null;
@@ -688,15 +684,14 @@ function compareData(newData, lastData){
 <span id="8"></span>
 ## 🚀8. 트러블 슈팅
 <details>
-  <summary><b>생산 로직의 쓰레드 충돌</b></summary>
+  <summary><b>생산 로직의 스레드 충돌</b></summary>
   <b>&gt; 현상</b><br>
-  기존의 코드는 Thread Pool을 2개를 생성하여 각각 <b>생산과 N초마다 메세지를 보내는 형식</b>으로 구현<br>
-  하지만 1공정의 생산 쓰레드인 productionFuture가 종료됨과 동시에 메세지를 보내는 쓰레드인 sendFuture를 종료시키기 때문에 1공정이 모두 종료된 후 2공정 메서드가 시작될 것이라고 생각하였지만, 1공정 시작 메서드에서 productionFuture와 sendFuture는 독립적으로 돌아가고 바로 2공정 메서드(processSecond)를 실행시키고 2공정 메서드 안에서 productionFuture와 sendFuture에 또 다시 새로운 future가 들어가서 쓰레드의 충돌이 나는 것이라고 생각 됨<br><br>
-  또한 productionFuture가 종료가 된 다음 processSecond()를 호출하기 위해 productionFuture.get()을 사용하게 되면, productionFuture의 작업이 끝날 때까지 Block 되기 때문에 sendFuture가 실행되지 않아 클라이언트가 메세지를 받을 수 없었음<br><br>
+  기존의 코드는 Thread Pool을 2개를 생성하여 각각 <b>생산과 N초마다 메세지를 보내는 방식</b>으로 구현<br>
+  하지만 1공정 생산 + 메세지 전송 -> 1공정 생산 종료 + 생산 메서드가 메세지 전송을 강제 종료 -> 2공정 생산 + 메세지 전송의 방식으로 진행될 것이라 예상하였으나<br>
+  1공정의 productionFuture와 sendFuture에 2공정의 값이 덮어씌워진 원인 때문인지 원하는 순서로 실행이 되지 않음<br><br>
   <b>&gt; 해결 방안</b><br>
-  <img src="https://raw.githubusercontent.com/calmnature/pencraft/main/GIF/thread.gif" alt="쓰레드 이미지"><br>
-  쓰레드의 작업은 순차적으로 진행되는 것이 아니라 컴퓨터가 내부적으로 돌리기 때문에 생각했던 순서대로 진행이 되지 않았음<br>
-  따라서 1개의 쓰레드로 1공정 실행 -> 1공정 종료 -> 2공정 실행 -> 2공정 종료의 형식이 아니라 1공정 ~ 4공정까지 하나의 작업으로 묶어서 아래의 코드처럼 processTask를 실행하면 그 안에서 1~4공정 로직과 저장까지 하는 것을 1개의 Task로 묶음
+  <img src="https://raw.githubusercontent.com/calmnature/pencraft/main/GIF/thread.gif" alt="스레드 이미지"><br>
+  싱글 스레드로 1공정 ~ 4공정까지 하나의 작업으로 묶어서 아래의 코드처럼 processTask를 실행하면 그 안에서 1~4공정 로직과 저장까지 하는 것을 1개의 작업으로 병합
   
   ```java
     private Runnable processTask(int count) {
@@ -812,7 +807,7 @@ function drawChart(canvas, data, text) {
 ## 🙆‍♂️12. 느낀 점 및 아쉬운 점
 > 느낀점
 - 스프링의 Controller, Service, Repository의 역할을 명확히 구분
-- 웹소켓과 쓰레드를 이용한 실시간 통신을 구현할 수 있었으며, 몰랐던 새로운 기술을 응용하기 위한 방법 습득
+- 웹소켓과 스레드를 이용한 실시간 통신을 구현할 수 있었으며, 몰랐던 새로운 기술을 응용하기 위한 방법 습득
 - Javascript와 jQuery의 기본적인 문법과 var, let, const 자료형에 대해 알게 되었으며 ajax를 이용한 서버와 클라이언트 간의 비동기 통신을 사용
 - Validation을 이용하여 컨트롤러 단에서 검증을 하는 것을 습득
 - JpaRepository의 페이징의 기능의 사용법 습득
