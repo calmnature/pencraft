@@ -21,12 +21,6 @@ public class LoginController {
 
     private final LoginService loginService;
 
-//    @GetMapping("/")
-//    public String loginForm(Model model) {
-//        model.addAttribute("loginForm", new LoginForm());
-//        return "home";
-//    }
-
     @PostMapping("/login")
     public String login(@Valid @ModelAttribute("loginForm") LoginForm form, BindingResult bindingResult, HttpServletRequest request, @RequestParam(name = "redirectURL", defaultValue = "/home")String redirectURL) {
         log.warn("POST로 /login 들어옴!");

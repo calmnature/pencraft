@@ -19,9 +19,6 @@ public class Employees {
     @Column(name = "mainId")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employees_seq")
     private Long id;
-
-    // 03.08 패치로 미사용
-//    private String employees_id;
     private String password;
     private String name;
 

@@ -9,8 +9,6 @@ import lombok.*;
 public class EmployeesForm {
 
     private Long id;
-    //0308패치로 미사용
-//    private String employeesId;
     private String password;
     private String name;
     private String role;

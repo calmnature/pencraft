@@ -23,16 +23,5 @@ public class LoginService {
             }
         }
         return null;
-//        Optional<Employees> findEmployeesOptional = employeesRepository.findById(Long.parseLong(employees_id));
-//        if (findEmployeesOptional.isEmpty()) {
-//            return null;
-//        }
-//        Employees employees = findEmployeesOptional.get();
-//
-//        if (employees.getPassword().equals(password)) {
-//            return employees;
-//        }
-//
-//        return null;
     }
 }

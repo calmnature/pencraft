@@ -23,30 +23,8 @@ public class ErrorService {
     public List<Error> saveAllError(List<Error> list){
         return errorRepository.saveAll(list);
     }
-    //에러찾는 로직
-    public Error findById(Long id) {
-        return errorRepository.findByProduct_errorCode(id);
-    }
 
-    //전체 에러 기준을 가져옴
     public List<Error> findAllErrors() {
         return errorRepository.findAll();
     }
-
-    
-    //에러 코드에 따른 에러 내용 받는 로직
-    public String whereIsError(Long id) {
-        Optional<Error> result = errorRepository.findById(id);
-        if (result.isPresent()) {
-            return result.get().getError_detail();
-        } else {
-            return "Undefine Error";
-        }
-    }
-
-    public Page<Error> findAllPage(int no, int size) {
-        Pageable pageable = PageRequest.of(no, size);
-        return errorRepository.findAll(pageable);
-    }
-
 }

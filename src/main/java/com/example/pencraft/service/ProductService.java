@@ -27,10 +27,6 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final LotRepository lotRepository;
     
-    public List<Product> findAll() {
-        return productRepository.findAll_products();
-    }
-
     public Page<Product> findAllPage(int no, int size, String criteria) {
         Pageable pageable = PageRequest.of(no, size, Sort.by(Sort.Direction.DESC, criteria));
         return productRepository.findAll(pageable);

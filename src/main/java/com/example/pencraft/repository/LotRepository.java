@@ -14,9 +14,6 @@ public interface LotRepository extends JpaRepository<Lot, Long> {
     @Query(value = "SELECT * FROM lot where lot_id = :id", nativeQuery = true)
     Lot findByLot_id(@Param("id")Long id);
 
-    @Query(value = "SELECT MAX(lot_id) FROM lot", nativeQuery = true)
-    Long selectMaxLotId();
-
     @Query(value = "SELECT * FROM lot WHERE end_time >= :compare", nativeQuery = true)
     List<Lot> findByBeforeDays(@Param("compare") String compare);
 

@@ -38,6 +38,5 @@ public class RoleCheckFilter implements Filter {
     }
     private boolean isRoleCheckPath(String requestURI) {
         return PatternMatchUtils.simpleMatch(blackList, requestURI);
-        // 매칭이 되지 않을 때 검증을 해야하기 때문에 부정해준다.
     }
 }

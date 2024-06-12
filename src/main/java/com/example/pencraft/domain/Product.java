@@ -21,8 +21,6 @@ public class Product {
     private String assembly_cap;
     private String acceptance;
     private String comment;
-
-    //에러코드 컬럼 추가(03.05)
     private Long error_code;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,20 +30,4 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lot_id")
     private Lot lot;
-
-
-    public static Product toEntity(ProductForm productForm){
-        Product product = new Product();
-        product.setProductId(productForm.getProduct_id());
-        product.setVolume(productForm.getVolume());
-        product.setNib(productForm.getNib());
-        product.setAssembly_body(productForm.getAssembly_body());
-        product.setAssembly_cap(productForm.getAssembly_cap());
-        product.setAcceptance(productForm.getAcceptance());
-        product.setComment(productForm.getComment());
-        product.setError_code(productForm.getError_code());
-        product.setLot(Lot.toEntity(productForm.getLot()));
-        return product;
-    }
-
 }

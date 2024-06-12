@@ -64,10 +64,4 @@ public class Lot extends BaseTimeEntity{
                 lotForm.getDetail()
         );
     }
-
-    public void patch(int s_count, int f_count) {
-        this.s_count = s_count;
-        this.f_count = f_count;
-        this.status = 2;
-    }
 }

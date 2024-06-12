@@ -20,20 +20,8 @@ import java.util.Objects;
 @Slf4j
 @RequiredArgsConstructor
 public class ProductController {
-    // 품질 관리 컨트롤러
-    // 생산된 제품들을 확인할 수 있는 컨트롤러
     private final ProductService productService;
-
-    //에러 내용을 가져올수 있도록 서비스와 연결(03.05)
     private final ErrorService errorService;
-
-    //@GetMapping("/products")
-    //public String showProducts(Model model) {
-    //    List<Product> products = productService.findAll();
-    //    model.addAttribute("products", products);
-    //   return "products/showProducts";
-    //}
-
 
     @GetMapping(value = "/products", produces = MediaType.APPLICATION_JSON_VALUE)
     public String showProduct_page(Model model, @RequestParam(name = "pageNo",defaultValue = "1")int pageNo, @RequestParam(name = "pageSize",defaultValue = "10")int pageSize) {
@@ -78,16 +66,6 @@ public class ProductController {
 
         Page<Product> page = productService.findAllPageForError(realPage, pageSize);
         List<ProductForm> products = productService.entityToDto(page.getContent());
-//        log.info("수정 전 products : " + products);
-        
-        //제품을 모두 찾는다.
-//        List<Product> products = productService.findAll();
-//        log.info("수정 후 products : " + products);
-
-        //에러 테이블의 페이지네이션을 위한 페이지 데이터를 가져온다.
-//        Page<Error> page_error = errorService.findAllPage(pageNo, pageSize);
-        
-        //에러 디테일 데이터를 가져오기위한 서비스
         List<Error> errors = errorService.findAllErrors();
 
         log.info("에러정보 : " + errors);

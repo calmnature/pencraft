@@ -17,10 +17,7 @@ public class EmployeesService {
     private final EmployeesRepository employeesRepository;
 
     public Long join(Employees employees) {
-
-//        validateDuplicateEmployees(employees);
         employeesRepository.save(employees);
-
         return employees.getId();
     }
 
@@ -29,17 +26,9 @@ public class EmployeesService {
         return employees.getId();
     }
 
-//    private void validateDuplicateEmployees(Employees employees) {
-//        List<Employees> findEmployees = employeesRepository.findEmployees(employees.getId());
-//        if (!findEmployees.isEmpty()) {
-//            throw new IllegalStateException("이미 존재하는 사번입니다.");
-//        }
-//    }
-
     public List<Employees> findEmployees() {
         return employeesRepository.findAll();
     }
-
 
     public Employees updatePassword(Long id){
         Employees employees = employeesRepository.findByEmpId(id);
@@ -61,13 +50,10 @@ public class EmployeesService {
         return false;
     }
 
-
-
     public Long findMaxId() {
         log.info("가장 큰거 : " + employeesRepository.findMaxId());
         return employeesRepository.findMaxId();
     }
-
 
     public Employees modifyPassword(Employees employees, String password) {
         employees.setPassword(password);
