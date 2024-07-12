@@ -231,8 +231,8 @@ PEN CRAFT 프로젝트의 완성 과정을 소개해드리겠습니다.<br>
 ## ⌨7. 핵심 코드
 <details>
   <summary><b>1공정 ~ 4공정 생산 로직</b></summary>
-  <b>ExecutorService의 싱글 스레드</b>를 이용하여 제품 생산을 하여 클라이언트가 반복문 동안의 지연을 방지<br>
-  각 공정의 일정 주기에 따라 <b>WebSocketSenderService</b>를 이용하여 클라이언트 측으로 현재 생산 현황을 전송
+  ExecutorService의 싱글 스레드를 이용하여 제품 생산을 하는 동안 클라이언트가 <b>반복문 완료를 기다리지 않고</b> 스레드로 백그라운드에서 실행<br>
+  각 공정의 반복문의 index 값에 따라 클라이언트 측으로 데이터 전송
   
 ```java
 @Service
@@ -403,9 +403,16 @@ public class ProcessService {
             product.setLot(lot); // 생산된 제품에 Lot 등록
             product.setStandard(standard); // 생산된 제품에 규격 등록
         }
-
-        List<Product> saveProductList = productRepository.saveAll(productList);
-        log.info("저장된 제품 리스트 = {}", saveProductList);
+        long before = System.currentTimeMillis();
+        if(lot.getOutput() < 1000){
+            productRepository.saveAll(productList);
+            log.info("JpaRepository saveAll()");
+            log.info("실행시간 = {}", System.currentTimeMillis()-before);
+        } else{
+            productRepository.bulkInsert(productList);
+            log.info("Bulk Insert");
+            log.info("실행시간 = {}", System.currentTimeMillis()-before);
+        }
     }
 
     private void processOneLogic(int count) throws Exception{
@@ -477,6 +484,61 @@ public class ProcessService {
     // processOneLogic ~ processFourLogic까지는 거의 비슷한 로직이기에 중략
 }
 
+```
+
+</details>
+<details>
+  <summary><b>벌크 INSERT을 이용한 대용량 데이터 추가 속도 성능 개선 → 3412%(34.12배) 증가</b></summary>
+  기존 JpaRepository의 saveAll() 방식으로는 <b>999개의 데이터</b> 추가 시 <b style='color=red;'>약 2.79초 소요</b><br>
+  Bulk INSERT 사용 시 <b>1000개의 데이터</b> 추가 시 <b style='color=red;'>약 0.082초 소요</b><br>
+  <img src="https://raw.githubusercontent.com/calmnature/pencraft/main/GIF/11.Bulk.png" alt="벌크insert 이미지"><br>
+
+```java
+package com.example.pencraft.repository;
+
+import com.example.pencraft.domain.Product;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductRepositoryImpl implements ProductRepositoryCustom{
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Override
+    @Transactional
+    public List<Product> bulkInsert(List<Product> products) {
+        if(products.isEmpty()) return new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        sb.append("INSERT INTO product (lot_id, standard_id, error_code, volume, nib, assembly_body, assembly_cap, acceptance) VALUES ");
+        for(int i = 0; i < products.size(); i++){
+            sb.append("(?,?,?,?,?,?,?,?)");
+            if(i < products.size()-1)
+                sb.append(",");
+        }
+        System.out.println("sb = " + sb);
+        Query query = entityManager.createNativeQuery(sb.toString());
+        for(int i = 0; i < products.size(); i++){
+            Product product = products.get(i);
+            query.setParameter(i * 8 + 1, product.getLot().getLotId());
+            query.setParameter(i * 8 + 2, product.getStandard().getStandard_id());
+            query.setParameter(i * 8 + 3, product.getError_code());
+            query.setParameter(i * 8 + 4, product.getVolume());
+            query.setParameter(i * 8 + 5, product.getNib());
+            query.setParameter(i * 8 + 6, product.getAssembly_body());
+            query.setParameter(i * 8 + 7, product.getAssembly_cap());
+            query.setParameter(i * 8 + 8, product.getAcceptance());
+        }
+        int tmp = query.executeUpdate();
+        System.out.println("query 결과 = " + tmp);
+
+        return products;
+    }
+}
 ```
 
 </details>
@@ -684,14 +746,15 @@ function compareData(newData, lastData){
 <span id="8"></span>
 ## 🚀8. 트러블 슈팅
 <details>
-  <summary><b>생산 로직의 스레드 충돌</b></summary>
+  <summary><b>제품 생산이 2번 이상 요청되었을 경우 무한 반복 발생</b></summary>
   <b>&gt; 현상</b><br>
-  기존의 코드는 Thread Pool을 2개를 생성하여 각각 <b>생산과 N초마다 메세지를 보내는 방식</b>으로 구현<br>
-  하지만 1공정 생산 + 메세지 전송 -> 1공정 생산 종료 + 생산 메서드가 메세지 전송을 강제 종료 -> 2공정 생산 + 메세지 전송의 방식으로 진행될 것이라 예상하였으나<br>
-  1공정의 productionFuture와 sendFuture에 2공정의 값이 덮어씌워진 원인 때문인지 원하는 순서로 실행이 되지 않음<br><br>
-  <b>&gt; 해결 방안</b><br>
+  - 기존의 코드는 Thread Pool 2개를 생성하여 각각 제품 생산과 N초마다 메세지를 보내는 무한 반복문으로 구성<br>
+  - 1공정 생산 + 메세지 전송 -> 1공정 생산 종료 + 생산 메서드가 메세지 전송을 강제 종료 -> 2공정 생산 + 메세지 전송의 방식으로 진행될 것이라 예상하였으나<br>
+  - 스레드는 운영체제에 의해 제어되어 순서 지정불가 <br><br>
   <img src="https://raw.githubusercontent.com/calmnature/pencraft/main/GIF/thread.gif" alt="스레드 이미지"><br>
-  싱글 스레드로 1공정 ~ 4공정까지 하나의 작업으로 묶어서 아래의 코드처럼 processTask를 실행하면 그 안에서 1~4공정 로직과 저장까지 하는 것을 1개의 작업으로 병합
+  <b>&gt; 해결 방안</b><br>
+  - 싱글 스레드로 1~4번의 제품 생산을 하나의 그룹(Task)으로 지정 → 메세지 전송 : 반복문에서 일정 주기마다 데이터 전송<br>
+  - 2회 이상의 제품 생산 요청 시 요청 순서대로 생산 가능
   
   ```java
     private Runnable processTask(int count) {
