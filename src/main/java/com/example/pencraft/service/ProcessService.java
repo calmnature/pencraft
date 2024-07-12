@@ -45,7 +45,7 @@ public class ProcessService {
     // 몇초 주기로 클라이언트에게 메세지를 보낼지 시간 설정
     private static final int SEND_MESSAGE_DELAY = 1000;
     // 제품 1개 생산하는데 몇 초마다 생산할지 시간 설정
-    private static final int PRODUCTION_DELAY = 100;
+    private static final int PRODUCTION_DELAY = 1;
 
     // 생산 for문에서 인덱스(i)가 sendIndex마다 메세지 전송
     private static final int SEND_INDEX = SEND_MESSAGE_DELAY / PRODUCTION_DELAY;
@@ -185,9 +185,16 @@ public class ProcessService {
             product.setLot(lot); // 생산된 제품에 Lot 등록
             product.setStandard(standard); // 생산된 제품에 규격 등록
         }
-
-        List<Product> saveProductList = productRepository.saveAll(productList);
-        log.info("저장된 제품 리스트 = {}", saveProductList);
+        long before = System.currentTimeMillis();
+        if(lot.getOutput() < 1000){
+            productRepository.saveAll(productList);
+            log.info("JpaRepository saveAll()");
+            log.info("실행시간 = {}", System.currentTimeMillis()-before);
+        } else{
+            productRepository.bulkInsert(productList);
+            log.info("Bulk Insert");
+            log.info("실행시간 = {}", System.currentTimeMillis()-before);
+        }
     }
 
     private void processOneLogic(int count) throws Exception{
