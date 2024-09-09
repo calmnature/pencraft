@@ -12,14 +12,13 @@
 2. [개발 일정](#2)
 3. [개발 환경 / Dependencies / 기술 스택](#3)
 4. [담당 업무](#4)
-5. [프로젝트 폴더 구조](#5)
-6. [주요 기능 소개](#6)
-7. [핵심 코드](#7)
-8. [트러블 슈팅](#8)
-9. [리팩토링 완료](#9)
-10. [보완 사항](#10)
-11. [보완 완료](#11)
-12. [느낀 점 및 아쉬운 점](#12)
+5. [주요 기능 소개](#5)
+6. [기술적 의사 결정](#6)
+7. [트러블 슈팅](#7)
+8. [리팩토링 완료](#8)
+9. [보완 사항](#9)
+10. [보완 완료](#10)
+11. [느낀 점 및 아쉬운 점](#11)
 <br><br><br><br>
 <span id="1"></span>
 ## 🏭1. 프로젝트 소개
@@ -27,7 +26,6 @@
 <b>5명의 인원으로 1명의 Front-End, 3명의 Back-End, 1명의 DB 설계</b>로 구성된 프로젝트입니다.<br>
 저희의 주제는 <b>'제품별 품질 관리와 라인 내 에러 정보 통합 모니터링 및 분석 시스템 구축'</b>으로 보드마카를 생산하는 공장을 선정하였습니다.
 해당 프로젝트는 <b>제품 생산, 모니터링, 품짐 관리를 하는 기능을 주요 기능</b>으로 생각하고 구현하였습니다.<br>
-PEN CRAFT 프로젝트의 완성 과정을 소개해드리겠습니다.<br>
 [목차](#table)
 <br><br><br><br>
 
@@ -42,8 +40,6 @@ PEN CRAFT 프로젝트의 완성 과정을 소개해드리겠습니다.<br>
 <span id="3"></span>
 ## ⚙3. 개발 환경 / Dependencies / 기술 스택
 ### 🛠개발환경
-  - **OS : Windows 10**
-  - **통합개발환경(IDE) : IntelliJ**
   - **JDK Version : JDK 17**
   - **Database : MySQL**
   - **Build Tool : IntelliJ IDEA**
@@ -64,14 +60,12 @@ PEN CRAFT 프로젝트의 완성 과정을 소개해드리겠습니다.<br>
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
 ![Javascript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white)
 ![jQuery](https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white)
-![Thymeleaf](https://img.shields.io/badge/Thymeleaf-239120?style=for-the-badge)
   - **Back End**<br>
-![Spring](https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
+![SpringBoot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![Thymeleaf](https://img.shields.io/badge/Thymeleaf-239120?style=for-the-badge)
 ![WebSocket](https://img.shields.io/badge/WebSocket-red?style=for-the-badge)
-![JPA](https://img.shields.io/badge/JPA-DB7093?style=for-the-badge)
   - **Database**<br>
 ![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
-![Woekbench](https://img.shields.io/badge/MySQL%20Workbench-00000F?style=for-the-badge&logo=mysql&logoColor=white)
   - **Communication**<br>
 ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)
 ![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)
@@ -83,126 +77,18 @@ PEN CRAFT 프로젝트의 완성 과정을 소개해드리겠습니다.<br>
 <span id="4"></span>
 ## ✋4. 담당 업무
 #### [담당 업무]
-- 웹소켓과 스레드를 이용한 생산 공정 로직 구현
-- 데이터 시각화를 위한 Javascript와 jQuery 지식 습득 및 공유
-- 전체적인 에러 해결 및 코드 리팩토링
-- 각각의 기능을 구현한 코드 통합
+- 웹소켓과 스레드를 이용한 생산 공정 로직 구현 (Process, Websocket)
+- ChartJS를 통한 데이터 시각화 (.js 파일 코딩, LotService, ProcessService)
+- 팀원의 Backend 에러 발생 시 트러블 슈팅 및 중복 코드 리팩토링
+- 형상 관리에 대해 몰랐기 때문에 팀원이 개발한 코드들을 수동으로 합치는 작업
+- Bulk insert를 통해 대량의 데이터 추가 시 성능 대폭 향상
 <br>
 
 [목차](#table)
 <br><br><br><br>
 
 <span id="5"></span>
-## 🗂5. 프로젝트 폴더 구조
-```
-📁src
-┣ 📂main
-┃ ┣ 📂java
-┃ ┃ ┣ 📂com.example.pencraft
-┃ ┃ ┃ ┣ 📂config
-┃ ┃ ┃ ┃ ┣ 📄WebConfig.java                  // 필터 순서 설정 파일
-┃ ┃ ┃ ┃ ┗ 📄WebSocketConfig.java            // 웹 소켓 설정 파일
-┃ ┃ ┃ ┣ 📂constant
-┃ ┃ ┃ ┃ ┗ 📄SessionConst.java               // 섹션에 저장할 로그인 이름 상수 선언
-┃ ┃ ┃ ┣ 📂controller
-┃ ┃ ┃ ┃ ┣ 📄EmployeesController.java        // 회원 관련 컨트롤러
-┃ ┃ ┃ ┃ ┣ 📄ErrorController.java            // 에러 페이지 발생 컨트롤러
-┃ ┃ ┃ ┃ ┣ 📄HomeController.java             // 로그인 성공 후 메인 페이지 컨트롤러
-┃ ┃ ┃ ┃ ┣ 📄LoginController.java            // 로그인 컨트롤러
-┃ ┃ ┃ ┃ ┣ 📄LotController.java              // Lot 관리 컨트롤러
-┃ ┃ ┃ ┃ ┣ 📄ProcessController.java          // 생산 지시 컨트롤러
-┃ ┃ ┃ ┃ ┣ 📄ProductController.java          // 제품 조회 컨트롤러
-┃ ┃ ┃ ┃ ┗ 📄WebSocketController.java        // 웹 소켓 컨트롤러
-┃ ┃ ┃ ┣ 📂domain
-┃ ┃ ┃ ┃ ┣ 📄BaseTimeEntity.java             // Lot 생성 시 생성, 수정 시각 저장할 클래스 파일(상속 받아 사용)
-┃ ┃ ┃ ┃ ┣ 📄Employees.java                  // 회원 Entity
-┃ ┃ ┃ ┃ ┣ 📄Error.java                      // 생산 제품 에러 Entity
-┃ ┃ ┃ ┃ ┣ 📄Lot.java                        // Lot Entity
-┃ ┃ ┃ ┃ ┣ 📄OccurrenceError.java            // Lot 발생 에러 Entity
-┃ ┃ ┃ ┃ ┣ 📄Process.java                    // 공정 Entity
-┃ ┃ ┃ ┃ ┣ 📄Product.java                    // 제품 Entity
-┃ ┃ ┃ ┃ ┗ 📄Standard.java                   // 제품 규격 Entity
-┃ ┃ ┃ ┣ 📂filter
-┃ ┃ ┃ ┃ ┣ 📄LogFilter.java                  // 모든 페이지 필터
-┃ ┃ ┃ ┃ ┣ 📄LoginCheckFilter.java           // 비로그인 시 접근 가능 페이지 필터
-┃ ┃ ┃ ┃ ┗ 📄RoleCheckFilter.java            // 로그인 후 관리자 및 일반 사용자 필터
-┃ ┃ ┃ ┣ 📂form
-┃ ┃ ┃ ┃ ┣ 📄CountForm.java                  // 생산 지시 DTO
-┃ ┃ ┃ ┃ ┣ 📄EmployeesForm.java              // 회원 DTO
-┃ ┃ ┃ ┃ ┣ 📄LastDataForm.java               // 모니터링 접속 시 가장 마지막에 생산된 양품, 불량품을 보낼 DTO
-┃ ┃ ┃ ┃ ┣ 📄LoginForm.java                  // 로그인 시 사용할 Validation의 Form
-┃ ┃ ┃ ┃ ┣ 📄LotCountForm.java               // 로그인 성공 후 메인 페이지에서 일/월/년별 그래프를 그리기 위한 DTO
-┃ ┃ ┃ ┃ ┣ 📄LotForm.java                    // Lot DTO
-┃ ┃ ┃ ┃ ┣ 📄PassFailProductForm.java        // Lot 관리 상세보기 시 각 공정의 양,불 개수를 보여주기 위한 DTO
-┃ ┃ ┃ ┃ ┗ 📄ProductForm.java                // 제품 DTO
-┃ ┃ ┃ ┣ 📂repository
-┃ ┃ ┃ ┃ ┣ 📄EmployeesRepository.java        // 회원 Repository
-┃ ┃ ┃ ┃ ┣ 📄ErrorRepository.java            // 에러 Repository
-┃ ┃ ┃ ┃ ┣ 📄LotRepository.java              // Lot Repository
-┃ ┃ ┃ ┃ ┣ 📄ProcessRepository.java          // 공정 Repository(미사용)
-┃ ┃ ┃ ┃ ┣ 📄ProductRepository.java          // 제품 Repository
-┃ ┃ ┃ ┃ ┗ 📄StandardRepository.java         // 제품 규격 Repository
-┃ ┃ ┃ ┗ 📂service
-┃ ┃ ┃ ┃ ┣ 📄EmployeesService.java           // 회원 Service
-┃ ┃ ┃ ┃ ┣ 📄ErrorService.java               // 에러 Service
-┃ ┃ ┃ ┃ ┣ 📄LoginService.java               // 로그인 Service
-┃ ┃ ┃ ┃ ┣ 📄LotService.java                 // Lot Service
-┃ ┃ ┃ ┃ ┣ 📄ProcessService.java             // 생산 지시 Service
-┃ ┃ ┃ ┃ ┣ 📄ProductService.java             // 제품 Service
-┃ ┃ ┃ ┃ ┣ 📄StandardService.java            // 규격 Service
-┃ ┃ ┃ ┃ ┗ 📄WebSocketSenderService.java     // 서버 -> 클라이언트에게 메세지를 보내기 위한 Service
-┃ ┃ ┃ ┣ 📄DummyDataLoader.java              // 서버 최초 실행 시 DB에 더미데이터를 넣기 위한 클래스 파일
-┃ ┃ ┃ ┗ 📄PencraftApplication.java
-┃ ┗ 📂resource
-┃ ┃ ┣ 📂static
-┃ ┃ ┃ ┣ 📂css
-┃ ┃ ┃ ┃ ┣ 📄bootstrap.css                   // 부트스트랩 CSS
-┃ ┃ ┃ ┃ ┣ 📄jumbotron-narrow.css
-┃ ┃ ┃ ┃ ┣ 📄loginhome.css                   // 로그인 성공 후 관리자, 일반 사용자의 메인 페이지의 CSS
-┃ ┃ ┃ ┃ ┣ 📄navbar.css                      // navbar.html의 CSS
-┃ ┃ ┃ ┃ ┗ 📄style.css
-┃ ┃ ┃ ┣ 📂img
-┃ ┃ ┃ ┗ 📂js
-┃ ┃ ┃ ┃ ┣ 📄home.js                         // SockJS를 연결하여 메인 페이지의 일/월/년별 데이터를 ChartJS로 그릴 JS 파일
-┃ ┃ ┃ ┃ ┣ 📄monitoring.js                   // SockJS를 연결하여 모니터링 페이지에서 실시간 공정 생산 현황의 데이터를 ChartJS로 그릴 JS 파일
-┃ ┃ ┃ ┃ ┗ 📄productShow.js                  // 제품 조회 페이지 '수정' 버튼 누를 경우 모달에서 데이터를 보여주기 위한 JS 파일
-┃ ┃ ┣ 📂templates
-┃ ┃ ┃ ┣ 📂employees
-┃ ┃ ┃ ┃ ┣ 📄change_password.html            // 비밀번호 변경 시 현재 비밀번호를 입력하여 사용자를 확인하기 위한 뷰 페이지
-┃ ┃ ┃ ┃ ┣ 📄create_employee.html            // 회원 생성 시 회원을 만들기 위한 뷰 페이지
-┃ ┃ ┃ ┃ ┣ 📄input_password.html             // 현재 비밀번호 확인 후 새 비밀번호를 입력받기 위한 뷰 페이지
-┃ ┃ ┃ ┃ ┗ 📄show_employee_list.html         // 회원 목록을 보여주기 위한 뷰 페이지
-┃ ┃ ┃ ┣ 📂error
-┃ ┃ ┃ ┃ ┣ 📄4xx.html                        // 400번대 에러 시 보여줄 뷰 페이지
-┃ ┃ ┃ ┃ ┣ 📄5xx.html                        // 500번대 에러 시 보여줄 뷰 페이지
-┃ ┃ ┃ ┃ ┗ 📄goBack.html                     // 일반 사용자가 관리자 페이지에 접속 시 보여 줄 뷰 페이지
-┃ ┃ ┃ ┣ 📂fragment                          // 템플릿화를 하기 위한 폴더
-┃ ┃ ┃ ┃ ┣ 📄bodyheader.html
-┃ ┃ ┃ ┃ ┣ 📄header.html
-┃ ┃ ┃ ┃ ┣ 📄navbar.html
-┃ ┃ ┃ ┃ ┗ 📄pageup.html
-┃ ┃ ┃ ┣ 📂lot
-┃ ┃ ┃ ┃ ┣ 📄show_lot.html                    // Lot 관리를 보여줄 뷰 페이지
-┃ ┃ ┃ ┃ ┗ 📄show_lot_detail.html             // Lot 관리 상세보기 버튼을 클릭 시 보여줄 뷰 페이지
-┃ ┃ ┃ ┣ 📂products
-┃ ┃ ┃ ┃ ┣ 📄error_products.html              // 불량품의 제품을 보여줄 뷰 페이지
-┃ ┃ ┃ ┃ ┣ 📄monitoring.html                  // 생산 지시 후 실시간 생산 현황을 보여줄 뷰 페이지
-┃ ┃ ┃ ┃ ┣ 📄show_products.html               // 생산된 제품을 보여줄 뷰 페이지
-┃ ┃ ┃ ┃ ┗ 📄start_process.html               // 생산 지시의 뷰 페이지(규격, 수량 입력)
-┃ ┃ ┃ ┣ 📂teams
-┃ ┃ ┃ ┃ ┗ 📄teamlist.html                    // 팀원 리스트의 뷰 페이지
-┃ ┃ ┃ ┣ 📄home.html                          // 최초 로그인 전 보여줄 뷰 페이지
-┃ ┃ ┃ ┣ 📄loginAdminHome.html                // 로그인 성공 후 관리자가 볼 메인 페이지
-┣ ╋ ╋ ┷ 📄loginStaffHome.html                // 로그인 성공 후 사용자가 볼 메인 페이지
-┗ ┷ ┷ 📄application.properties
-```
-<br>
-
-[목차](#table)
-<br><br><br><br>
-
-<span id="6"></span>
-## 🔍6. 주요 기능 소개
+## 🔍5. 주요 기능 소개
 |                                                로그인                                                 |                                                회원 생성 및 조회                                                 |
 | :-----------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------: |
 | ![로그인](https://raw.githubusercontent.com/calmnature/pencraft/main/GIF/1.%EB%A1%9C%EA%B7%B8%EC%9D%B8.gif) | ![회원생성](https://github.com/calmnature/pencraft/blob/main/GIF/2.%ED%9A%8C%EC%9B%90%20%EC%83%9D%EC%84%B1%20%EB%B0%8F%20%EC%A1%B0%ED%9A%8C.gif?raw=true) |
@@ -227,524 +113,40 @@ PEN CRAFT 프로젝트의 완성 과정을 소개해드리겠습니다.<br>
 [목차](#table)
 <br><br><br><br>
 
-<span id="7"></span>
-## ⌨7. 핵심 코드
+<span id="6"></span>
+## ⌨6. 기술적 의사 결정
 <details>
-  <summary><b>1공정 ~ 4공정 생산 로직</b></summary>
-  ExecutorService의 싱글 스레드를 이용하여 제품 생산을 하는 동안 클라이언트가 <b>반복문 완료를 기다리지 않고</b> 스레드로 백그라운드에서 실행<br>
-  각 공정의 반복문의 index 값에 따라 클라이언트 측으로 데이터 전송
-  
-```java
-@Service
-@Slf4j
-@Transactional
-@RequiredArgsConstructor
-public class ProcessService {
-
-    private final StandardRepository standardRepository;
-    private final LotRepository lotRepository;
-    private final ProductRepository productRepository;
-    private final WebSocketSenderService webSocketSenderService;
-
-    private Standard standard; // DB에서 가져온 규격을 저장
-    private Lot lot; // Lot Entity
-    private List<Product> productList; // 생산된 제품을 저장할 리스트
-
-    private ExecutorService executorService = Executors.newSingleThreadExecutor(); // 생산을 돌릴 스레드
-    private Future<?> productionFuture; // 생산을 담당할 Future
-
-    // 사용자에게 양품, 불량품을 보내주기 위한 변수
-    // 각 공정마다 최초 시작에 두 변수를 0으로 초기화해서 사용
-    private int goodCount; private int badCount;
-
-    // 현재 공정 상태 0 : 생산 종료, 1 ~ 4 : N공정 생산 중
-    private int nowProcess;
-
-    // 몇초 주기로 클라이언트에게 메세지를 보낼지 시간 설정
-    private static final int SEND_MESSAGE_DELAY = 1000;
-    // 제품 1개 생산하는데 몇 초마다 생산할지 시간 설정
-    private static final int PRODUCTION_DELAY = 100;
-
-    // 생산 for문에서 인덱스(i)가 sendIndex마다 메세지 전송
-    private static final int SEND_INDEX = SEND_MESSAGE_DELAY / PRODUCTION_DELAY;
-
-    private int msgSendCount;
-
-    // 클라이언트가 최초로 monitoring 페이지에 접속할 경우 마지막 생산 데이터를 전송
-    private Map<String, LastDataForm> lastDataMap = new HashMap<>();
-
-    // 생산 지시 시 실행되는 메서드
-    public void processStart(CountForm countForm) throws Exception {
-        // standard = standardRepository.findById(1L).orElse(null);
-        standard = standardRepository.findById(countForm.getStandard_id()).orElse(null);
-        log.info("제품 규격 = {}", standard);
-        productionFuture = executorService.submit(processTask(countForm.getCount()));
-    }
-
-
-    // 생산 중단 시 실행되는 메서드
-    public void stopProduction() {
-        log.warn("제품 생산 중단");
-        productionFuture.cancel(true);
-        if(nowProcess != 0){
-            lastDataMap = new HashMap<>();
-        }
-    }
-
-    // 사용자에게 메세지를 보내는 메서드
-    private void sendMessage(String destination) {
-        Map<String, Integer> data = new HashMap<>();
-        data.put("goodCount", goodCount);
-        data.put("badCount", badCount);
-        webSocketSenderService.sendMessageToClient(destination,data);
-    }
-
-    // 사용자에게 보낼 LastData를 만들어 반환하는 메서드
-    private LastDataForm lastDataCreate() {
-        return new LastDataForm(nowProcess, goodCount, badCount);
-    }
-
-    // monitoring 페이지 최초 접속 클라이언트에게 보낼
-    // LastData에 현재 몇 번째 공정인지 업데이트 하는 메서드
-    private void nowProcessUpdate() {
-        nowProcess++;
-        for(String key : lastDataMap.keySet()){
-            lastDataMap.get(key).setNowProcess(nowProcess);
-        }
-    }
-
-    // 사용자가 최초 접속 시 1~4공정의 LastData를 보내주는 메서드
-    public void sendLastDataMap() {
-        log.info("최초 접속 사용자에게 보낼 Map 데이터 : " + lastDataMap);
-        webSocketSenderService.sendMessageToClient("/process/lastdata", lastDataMap);
-    }
-
-    // executorService에 할당할 스레드 반환 메서드
-    private Runnable processTask(int count) {
-        return () -> {
-            try {
-                processOne(count); // 1공정 메서드
-                processTwo(); // 2공정 메서드
-                processThree(); // 3공정 메서드
-                processFour(); // 4공정 메서드
-                saveAll(); // 4공정까지 진행된 Lot, List<Product> 저장 메서드
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        };
-    }
-
-    // 1공정 메서드
-    private void processOne(int count) throws Exception{
-        log.info("1공정 시작");
-        nowProcess = 0; // 현재 공정 값 0으로 초기화
-        nowProcessUpdate(); // 현재 진행 중인 공정으로 업데이트
-        lot = new Lot(); // Lot Entity 생성
-        lot.setOutput(count); // 입력받은 생산량 저장
-        lot.setStart_time(LocalDateTime.now()); // 생산 시작 시간
-        lot.setFirst_start(LocalDateTime.now());  // 1공정 시작 시간
-        lot.setStatus(1); // 1 : 진행 중
-        productList = new ArrayList<>(); // 제품 리스트 초기화
-        processOneLogic(count); // 1공정 생산 로직
-        lot.setFirst_end(LocalDateTime.now()); // 1공정 종료 시간
-        lastDataMap.put("processOne", lastDataCreate()); // Map에 1공정 데이터 추가
-        Thread.sleep(SEND_MESSAGE_DELAY); // N초 대기
-        sendMessage("/process/first"); // 1공정 구독 메세지 전송
-        log.info("1공정 종료");
-    }
-
-    private void processTwo() throws Exception{
-        log.info("2공정 시작");
-        nowProcessUpdate(); // 현재 진행 중인 공정으로 업데이트
-        lot.setSecond_start(LocalDateTime.now()); // 2공정 시작 시간
-        processTwoLogic(); // 2공정 생산 로직
-        lot.setSecond_end(LocalDateTime.now()); // 2공정 종료 시간
-        lastDataMap.put("processTwo", lastDataCreate()); // Map에 2공정 데이터 추가
-        Thread.sleep(SEND_MESSAGE_DELAY); // N초 대기
-        sendMessage("/process/second"); // 2공정 구독 메세지 전송
-        log.info("2공정 종료");
-    }
-
-    private void processThree() throws Exception{
-        log.info("3공정 시작");
-        nowProcessUpdate(); // 현재 진행 중인 공정으로 업데이트
-        lot.setThird_start(LocalDateTime.now()); // 3공정 시작 시간
-        processThreeLogic(); // 3공정 생산 로직
-        lot.setThird_end(LocalDateTime.now()); // 3공정 종료 시간
-        lastDataMap.put("processThree", lastDataCreate()); // Map에 3공정 데이터 추가
-        Thread.sleep(SEND_MESSAGE_DELAY); // N초 대기
-        sendMessage("/process/third"); // 3공정 구독 메세지 전송
-        log.info("3공정 종료");
-    }
-
-    private void processFour() throws Exception{
-        log.info("4공정 시작");
-        nowProcessUpdate(); // 현재 진행 중인 공정으로 업데이트
-        lot.setFourth_start(LocalDateTime.now()); // 4공정 시작 시간
-        processFourLogic(); // 4공정 생산 로직
-        lot.setFourth_end(LocalDateTime.now()); // 4공정 종료 시간
-        lot.setEnd_time(LocalDateTime.now()); // 생산 종료 시간
-        lot.setS_count(goodCount); // 양품 개수
-        lot.setF_count(lot.getOutput() - lot.getS_count()); // 불량품 개수
-        lot.setStatus(2); // 상태 변경 2 : 종료
-        lastDataMap.put("processFour", lastDataCreate()); // Map에 4공정 데이터 추가
-        Thread.sleep(SEND_MESSAGE_DELAY); // N초 대기
-        sendMessage("/process/fourth"); // 4공정 구독 메세지 전송
-        log.info("4공정 종료");
-    }
-
-    private void saveAll() throws Exception {
-        nowProcess = -1; // 현재 진행 중인 프로세스 -1로 셋팅
-        nowProcessUpdate(); // 업데이트
-        Lot saveLot = lotRepository.save(lot); // lot Entity 저장
-        log.info("저장된 Lot = {}", saveLot);
-
-        for (Product product : productList) {
-            product.setLot(lot); // 생산된 제품에 Lot 등록
-            product.setStandard(standard); // 생산된 제품에 규격 등록
-        }
-        long before = System.currentTimeMillis();
-        if(lot.getOutput() < 1000){
-            productRepository.saveAll(productList);
-            log.info("JpaRepository saveAll()");
-            log.info("실행시간 = {}", System.currentTimeMillis()-before);
-        } else{
-            productRepository.bulkInsert(productList);
-            log.info("Bulk Insert");
-            log.info("실행시간 = {}", System.currentTimeMillis()-before);
-        }
-    }
-
-    private void processOneLogic(int count) throws Exception{
-        goodCount = 0;
-        badCount = 0;
-        msgSendCount = 0;
-        for (int i = 0; i < count; i++) {
-            msgSendCount++; // msgSendCount 1 증가
-            Thread.sleep(PRODUCTION_DELAY);
-            Random random = new Random();
-            Double start = 0.0;
-            Double end = 0.0;
-            Double volume = 0.0;
-            int ran = random.nextInt(1, 101);
-            if(ran > 5) {
-                if(standard.getStandard_id() == 1L){
-                    start = 98.0;
-                    end = 102.0;
-                }
-                else if(standard.getStandard_id() == 2L){
-                    start = 196.0;
-                    end = 204.0;
-                }
-            } else {
-                boolean bool = random.nextBoolean();
-                if(bool){
-                    if(standard.getStandard_id() == 1L){
-                        start = 90.0;
-                        end = 98.0;
-                    }
-                    else if(standard.getStandard_id() == 2L){
-                        start = 190.0;
-                        end = 195.5;
-                    }
-                } else{
-                    if(standard.getStandard_id() == 1L){
-                        start = 103.0;
-                        end = 110.0;
-                    }
-                    else if(standard.getStandard_id() == 2L){
-                        start = 205.0;
-                        end = 212.0;
-                    }
-                }
-            }
-            volume = Math.round(random.nextDouble(start,end) * 100) / 100.0;
-
-            Product p = new Product();
-            p.setVolume(volume);
-
-            // 최소 잉크와 최대 잉크 규격이내라면
-            if(standard.getMin_volume() <= volume && standard.getMax_volume() >= volume){
-                p.setAcceptance("P"); // 제품 양&불 여부 등록 -> P : Pass(양품)
-                goodCount++;
-            }
-            else {
-                p.setAcceptance("F"); // 제품 양&불 여부 등록 -> F : Fail(불양품)
-                p.setError_code(1L); // Error 코드 100번 등록
-                badCount++;
-            }
-            productList.add(p);
-            if(msgSendCount == SEND_INDEX){
-                sendMessage("/process/first"); // 1공정 구독자에게 메세지 전송
-                msgSendCount = 0;
-            }
-        }
-    }
-
-    // processOneLogic ~ processFourLogic까지는 거의 비슷한 로직이기에 중략
-}
-
-```
-
+  <summary><b>서버 ↔ 클라이언트 간의 통신</b></summary>
+  - 문제 : 제품을 생산하고 생산한 데이터를 <b>일정 시간을 주기</b>로 클라이언트측에 전송하고, 클라이언트 측에서는 데이터를 수신할 때마다 그래프로 시각화가 목적<br>
+  - 해결 : 양방향 실시간 통신이 필요했기 때문에 Polling, Server Sent Envent, WebSocket 중 WebSocket을 선택<br>
+  - 성과 : 서버의 WebSocket, 클라이언트의 SockJS를 이용하여 <b>양방향 통신을 구축</b>하고 구독을 통해 구독한 주소로 데이터가 수신될 때마다 <b>ChartJS를 이용하여 그래프 시각화</b>
 </details>
+
+<details>
+  <summary><b>생산 지시 후 모니터링 페이지 즉시 전환</b></summary>
+  - 문제 : 생산 지시를 하였을 때, 단순히 생산 반복문을 진행을 하게 될 경우 <b>동기적으로 작동</b>을 하기 때문에 반복문이 10초 소요되면 클라이언트는 10초 지연, 100초 소요 시 100초 지연이 되어버림<br>
+  → 즉, <b>반복문에 소요되는 시간 = 클라이언트 지연 시간</b><br>
+  - 해결 : 생산 지시를 하게 될 경우 메인 작업의 흐름을 방해하지 않고, <b>비동기적으로 백그라운드에서 실행</b>될 수 있도록 Thread의 사용이 필요<br>
+  → <b>Thread의 라이프 사이클 등의 관리</b>를 편리하게 해주는 <b>ExecutorService</b>를 적용
+  - 성과 : 비동기적으로 작동하기 때문에 그 어떤 <b>대기 없이 생산 지시 → 모니터링 페이지로 즉시 전환</b>
+  → <b>지연시간 100% 성능 개선</b>
+</details>
+
 <details>
   <summary><b>벌크 INSERT을 이용한 대용량 데이터 추가 속도 성능 개선 → 3412%(34.12배) 증가</b></summary>
-  기존 JpaRepository의 saveAll() 방식으로는 <b>999개의 데이터</b> 추가 시 <b style='color=red;'>약 2.79초 소요</b><br>
-  Bulk INSERT 사용 시 <b>1000개의 데이터</b> 추가 시 <b style='color=red;'>약 0.082초 소요</b><br>
-  <img src="https://raw.githubusercontent.com/calmnature/pencraft/main/GIF/11.Bulk.png" alt="벌크insert 이미지"><br>
-
-```java
-package com.example.pencraft.repository;
-
-import com.example.pencraft.domain.Product;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class ProductRepositoryImpl implements ProductRepositoryCustom{
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @Override
-    @Transactional
-    public List<Product> bulkInsert(List<Product> products) {
-        if(products.isEmpty()) return new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        sb.append("INSERT INTO product (lot_id, standard_id, error_code, volume, nib, assembly_body, assembly_cap, acceptance) VALUES ");
-        for(int i = 0; i < products.size(); i++){
-            sb.append("(?,?,?,?,?,?,?,?)");
-            if(i < products.size()-1)
-                sb.append(",");
-        }
-        System.out.println("sb = " + sb);
-        Query query = entityManager.createNativeQuery(sb.toString());
-        for(int i = 0; i < products.size(); i++){
-            Product product = products.get(i);
-            query.setParameter(i * 8 + 1, product.getLot().getLotId());
-            query.setParameter(i * 8 + 2, product.getStandard().getStandard_id());
-            query.setParameter(i * 8 + 3, product.getError_code());
-            query.setParameter(i * 8 + 4, product.getVolume());
-            query.setParameter(i * 8 + 5, product.getNib());
-            query.setParameter(i * 8 + 6, product.getAssembly_body());
-            query.setParameter(i * 8 + 7, product.getAssembly_cap());
-            query.setParameter(i * 8 + 8, product.getAcceptance());
-        }
-        int tmp = query.executeUpdate();
-        System.out.println("query 결과 = " + tmp);
-
-        return products;
-    }
-}
-```
-
-</details>
-
-<details>
-  <summary><b>웹소켓을 이용한 실시간 데이터 시각화</b></summary>
-  <b>서버는 일정 시간을 주기로 데이터를 전송</b>하여 클라이언트가 데이터를 수신<br>
-  클라이언트측에서는 <b>Javascript의 SockJS를 이용하여 웹소켓과 연결 -> 양방향 통신 구축</b><br>
-  <b>서버로부터 받은 데이터를 가지고 ChartJS를 이용하여 그래프 시각화</b><br>
-  
-```javascript
-var stompClient = null;
-// new Chart() 객체를 저장할 변수
-var chartOne = null;
-var chartTwo = null;
-var chartThree = null;
-var chartFour = null;
-
-// 1~4공정의 각각의 캔버스를 담을 변수
-var canvasOne;
-var canvasTwo;
-var canvasThree;
-var canvasFour;
-
-$(function () {
-    canvasOne = $("#processOne");
-    canvasTwo = $("#processTwo");
-    canvasThree = $("#processThree");
-    canvasFour = $("#processFour");
-    connect();
-});
-
-function connect() {
-    var socket = new SockJS('/sockjs');
-    console.log("SockJS 생성");
-
-    stompClient = Stomp.over(socket);
-    console.log("Stomp 위에 SockJS 올림");
-
-
-    stompClient.connect({}, function () {
-        // alert("WebSocket(SockJS)이 연결되었습니다.");
-        var lastData1 = null;
-        var lastData2 = null;
-        var lastData3 = null;
-        var lastData4 = null;
-        stompClient.send("/client/request",{},{})
-        var subscription = stompClient.subscribe('/process/lastdata', function (data) {
-            console.log(data);
-            console.log(data.body);
-            console.log(JSON.parse(data.body));
-            var jsondata = JSON.parse(data.body);
-            if(jsondata.processOne != null){
-                lastDataDraw(jsondata);
-            }
-            subscription.unsubscribe();
-        });
-
-        stompClient.subscribe('/process/first', function (data) {
-            if(chartTwo !== null){
-                chartTwo.destroy();
-                chartThree.destroy();
-                chartFour.destroy();
-                $("#secondText").html("");
-                $("#thirdText").html("");
-                $("#fourthText").html("");
-            }
-            var newData1 = JSON.parse(data.body);
-            console.log(newData1);
-            console.log(lastData1);
-            if(!compareData(newData1, lastData1)){
-                chartOne = drawChart(canvasOne,JSON.parse(data.body),"1공정");
-                resultData($("#firstText"), JSON.parse(data.body));
-                lastData1 = newData1;
-            }
-        });
-
-
-        stompClient.subscribe('/process/second', function (data) {
-            console.log(data);
-            console.log(chartTwo);
-            var newData2 = JSON.parse(data.body);
-            if(!compareData(newData2, lastData2)){
-                chartTwo = drawChart(canvasTwo,JSON.parse(data.body),"2공정");
-                resultData($("#secondText"), JSON.parse(data.body));
-                lastData2 = newData2;
-            }
-        });
-
-        stompClient.subscribe('/process/third', function (data) {
-            console.log(data);
-            var newData3 = JSON.parse(data.body);
-            if(!compareData(newData3, lastData3)){
-                chartThree = drawChart(canvasThree,JSON.parse(data.body),"3공정");
-                resultData($("#thirdText"), JSON.parse(data.body));
-                lastData3 = newData3;
-            }
-        });
-
-        stompClient.subscribe('/process/fourth', function (data) {
-            console.log(data);
-            var newData4 = JSON.parse(data.body);
-            if(!compareData(newData4, lastData4)){
-                chartFour = drawChart(canvasFour,JSON.parse(data.body),"4공정");
-                resultData($("#fourthText"), JSON.parse(data.body));
-                lastData4 = newData4;
-            }
-        });
-    });
-}
-
-
-function drawChart(canvas, data, text) {
-    var canvasId = canvas[0].id;
-    var chartStatus = Chart.getChart(canvasId);
-    if(chartStatus != undefined)
-        chartStatus.destroy();
-    return new Chart(canvas,{
-        type: 'pie',
-        data: {
-            labels: ['양품', '불량품'],
-            datasets: [{
-                label: '수량',
-                data: [data.goodCount, data.badCount],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    display:false
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: text,   //제목 "1공정"
-                    position: 'top',
-                    align: 'center',
-                    font: {
-                        size: 30,
-                        weight: 'bold',
-                    },
-                    color: 'white'
-                }
-            }
-        }
-    });
-}
-
-function lastDataDraw(jsondata) {
-    var select = jsondata.processOne.nowProcess;
-    switch (select) {
-        case 1:
-            break;
-        case 2:
-            chartOne = drawChart(canvasOne, jsondata.processOne, "1공정");
-            resultData($("#firstText"), jsondata.processOne);
-            break;
-        case 3:
-            chartOne = drawChart(canvasOne, jsondata.processOne, "1공정");
-            chartTwo = drawChart(canvasTwo, jsondata.processTwo, "2공정");
-            resultData($("#firstText"), jsondata.processOne);
-            resultData($("#secondText"), jsondata.processTwo);
-            break;
-        case 4:
-            chartOne = drawChart(canvasOne, jsondata.processOne, "1공정");
-            chartTwo = drawChart(canvasTwo, jsondata.processTwo, "2공정");
-            chartThree = drawChart(canvasThree, jsondata.processThree, "3공정");
-            resultData($("#firstText"), jsondata.processOne);
-            resultData($("#secondText"), jsondata.processTwo);
-            resultData($("#thirdText"), jsondata.processThree);
-            break;
-        case 0:
-            chartOne = drawChart(canvasOne, jsondata.processOne, "1공정");
-            chartTwo = drawChart(canvasTwo, jsondata.processTwo, "2공정");
-            chartThree = drawChart(canvasThree, jsondata.processThree, "3공정");
-            chartFour = drawChart(canvasFour, jsondata.processFour, "4공정");
-            resultData($("#firstText"), jsondata.processOne);
-            resultData($("#secondText"), jsondata.processTwo);
-            resultData($("#thirdText"), jsondata.processThree);
-            resultData($("#fourthText"), jsondata.processFour);
-            break;
-    }
-}
-
-function resultData(pTag, jsondata) {
-    pTag.html("<br><b>" + "양품 : " + jsondata.goodCount + "개</b><br><br>" + "<b>불량품 : " + jsondata.badCount + "개</b>");
-}
-
-function compareData(newData, lastData){
-    if(lastData !== null && JSON.stringify(lastData) === JSON.stringify(newData)) {
-        return true;
-    }
-    return false;
-}
-```
-
+  - 문제 : 기존 JpaRepository의 saveAll() 방식으로는 <b>999개의 데이터</b> 추가 시 <b>약 2.79초 소요</b><br>
+  - 해결 : Bulk Insert를 사용하여 MySQL에서 한 번에 insert를 하는 방법을 적용<br>
+  - 성과 : Bulk INSERT 사용 시 <b>1000개의 데이터</b> 추가 시 <b>약 0.082초 소요</b><br>
+  <img src="https://raw.githubusercontent.com/calmnature/pencraft/main/GIF/11.Bulk.png" alt="벌크insert 이미지"><br><br>
+  - 결론 : Bulk Insert 사용 전 후 <b>2.79초 → 0.082초</b>로 성능 개선
 </details>
 <br>
 
 [목차](#table)
 <br><br><br><br>
 
-<span id="8"></span>
-## 🚀8. 트러블 슈팅
+<span id="7"></span>
+## 🚀7. 트러블 슈팅
 <details>
   <summary><b>제품 생산이 2번 이상 요청되었을 경우 무한 반복 발생</b></summary>
   <b>&gt; 현상</b><br>
@@ -755,23 +157,6 @@ function compareData(newData, lastData){
   <b>&gt; 해결 방안</b><br>
   - 싱글 스레드로 1~4번의 제품 생산을 하나의 그룹(Task)으로 지정 → 메세지 전송 : 반복문에서 일정 주기마다 데이터 전송<br>
   - 2회 이상의 제품 생산 요청 시 요청 순서대로 생산 가능
-  
-  ```java
-    private Runnable processTask(int count) {
-        return () -> {
-            try {
-                processOne(count); // 1공정 메서드
-                processTwo(); // 2공정 메서드
-                processThree(); // 3공정 메서드
-                processFour(); // 4공정 메서드
-                saveAll(); // 4공정까지 진행된 Lot, List<Product> 저장 메서드
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        };
-    }
-  ```
-
 </details>
 
 <details>
@@ -780,24 +165,14 @@ function compareData(newData, lastData){
   최초 그래프를 그린 후 그래프가 새로 그려지지 않으며 F12에서 이미 사용중인 캔버스이므로 destroy를 해야한다는 에러 문구 발생<br>
   <b>&gt; 해결 방안</b><br>
   <b>한 개의 canvas 태그에는 한 개의 차트만</b> 그려질 수 있기에 다음과 같이 <b>차트를 그리기 전 차트가 있다면 해당 차트를 destroy()메서드로 차트를 없앤 뒤</b> 새로 그림
-  
-  ```javascript
-function drawChart(canvas, data, text) {
-    var canvasId = canvas[0].id;
-    var chartStatus = Chart.getChart(canvasId);
-    if(chartStatus != undefined)
-        chartStatus.destroy();
-    return new Chart(canvas,{
-    // (중략)
-  ```
-</details>
+
 <br>
 
 [목차](#table)
 <br><br><br><br>
 
-<span id="9"></span>
-## ⭕9. 리팩토링 완료
+<span id="8"></span>
+## ⭕8. 리팩토링 완료
 - **생산 공정 로직**
   - processStart() 메서드 실행 시 processTask() 메서드 호출
   - 각 공정 메서드인 processOne() ~ processFour() 실행
@@ -821,8 +196,8 @@ function drawChart(canvas, data, text) {
 [목차](#table)
 <br><br><br><br>
 
-<span id="10"></span>
-## ❗10. 보완 사항
+<span id="9"></span>
+## ❗9. 보완 사항
 - **비 로그인 시 권한이 없는 URL 접속할 경우 Alert창 추가**
   - **로그인이 되지 않은 상태**로 로그인 시 이용 가능한 주소창을 직접 입력할 경우 로그인 페이지로 필터가 되지만 특별한 알림창이 출력되지 않음
   - alert 창을 이용하여 '로그인이 필요합니다' 같은 알림창 추가
@@ -841,8 +216,8 @@ function drawChart(canvas, data, text) {
 [목차](#table)
 <br><br><br><br>
 
-<span id="11"></span>
-## ☑11. 보완 완료
+<span id="10"></span>
+## ☑10. 보완 완료
 - **페이지 필터**
   - **로그인이 되지 않은 상태(세션에 로그인 정보가 없는 상태)에서 로그인 이외의 페이지를 요청을 할 경우 접근이 불가능**하고 로그인을 유도하기 위해 로그인 페이지로 이동
 - **예외 처리**
@@ -866,8 +241,8 @@ function drawChart(canvas, data, text) {
 [목차](#table)
 <br><br><br><br>
 
-<span id="12"></span>
-## 🙆‍♂️12. 느낀 점 및 아쉬운 점
+<span id="11"></span>
+## 🙆‍♂️11. 느낀 점 및 아쉬운 점
 > 느낀점
 - 스프링의 Controller, Service, Repository의 역할을 명확히 구분
 - 웹소켓과 스레드를 이용한 실시간 통신을 구현할 수 있었으며, 몰랐던 새로운 기술을 응용하기 위한 방법 습득
